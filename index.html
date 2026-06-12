@@ -18,7 +18,7 @@ h1{margin:0;font-size:42px;letter-spacing:-.06em;line-height:1.05}
 button,select{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 13px;border-radius:999px;font-size:14px;cursor:pointer}
 button.active,button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}button.ghost{background:#f5f5f5}
 #status{margin:6px 0 0;color:var(--muted);font-size:14px;line-height:1.5}
-.brief-box,.article-box{max-width:1180px;margin:0 auto 16px;padding:20px}.brief-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}.hint{color:#777;font-size:13px;line-height:1.6;margin:0 0 12px}
+.brief-box,.article-box{max-width:1180px;margin:0 auto 16px;padding:20px}.brief-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}.hint{display:none}
 #smartArticle{color:#222;line-height:1.9;margin:0;white-space:pre-wrap;font-size:16px}.article-box details{border-top:1px solid var(--line);padding-top:14px}.article-box summary{cursor:pointer;font-weight:800}.raw-list{display:grid;gap:12px;margin-top:12px}.raw-item{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:16px;padding:14px}.raw-item h3{margin:0 0 8px;font-size:16px}.raw-text{color:#444;line-height:1.7;font-size:14px;max-height:170px;overflow:auto}
 main{max-width:1180px;margin:auto;padding:0 16px 42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}.card{padding:17px;min-height:238px;display:flex;flex-direction:column;gap:10px}.tag-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{width:max-content;padding:5px 9px;border-radius:999px;background:#eee;color:#333;font-size:12px;font-weight:800}.fav{border:0;padding:4px 7px;border-radius:10px;font-size:18px;background:transparent}.fav.saved{background:#111;color:#fff}.card h3{margin:0;font-size:18px;line-height:1.35;letter-spacing:-.02em}.meta{color:var(--muted2);font-size:13px}.summary{color:#444;line-height:1.6;font-size:14px}a{color:#111;text-decoration:none;margin-top:auto;font-weight:800;font-size:14px;border-bottom:1px solid #111;width:max-content}.empty{grid-column:1/-1;text-align:center;color:#777;padding:36px;background:#fff;border:1px solid var(--line);border-radius:24px}
 footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13px;line-height:1.6}
@@ -28,37 +28,37 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 <body>
 <header>
 <section class="hero"><p class="kicker">Smart Morning Brief</p><h1 id="pageTitle">今日简报</h1></section>
-<section class="today-card"><div><div class="date" id="dateText"></div><div class="big-number" id="newsCount">0</div><div class="small" id="countText">篇文章准备中</div></div><div class="small">TTS 朗读整理后的中文晨报；博客模式朗读清洗后的原文材料。</div></section>
+<section class="today-card"><div><div class="date" id="dateText"></div><div class="big-number" id="newsCount">0</div><div class="small" id="countText">篇文章准备中</div></div></section>
 </header>
 
 <section class="panel">
 <div class="tabs">
-<button class="tab active" data-cat="all">首页：今日简报</button><button class="tab" data-cat="科技">科技</button><button class="tab" data-cat="AI">AI</button><button class="tab" data-cat="能源">能源</button><button class="tab" data-cat="太空">太空</button><button class="tab" data-cat="医疗">医疗</button><button class="tab" data-cat="收藏">收藏新闻</button>
+<button class="tab active" data-cat="all" data-i18n="homeTab">首页：今日简报</button><button class="tab" data-cat="科技" data-i18n="tech">科技</button><button class="tab" data-cat="AI">AI</button><button class="tab" data-cat="能源" data-i18n="energy">能源</button><button class="tab" data-cat="太空" data-i18n="space">太空</button><button class="tab" data-cat="医疗" data-i18n="medical">医疗</button><button class="tab" data-cat="收藏" data-i18n="saved">收藏新闻</button>
 </div>
 <div class="controls">
-<select id="language"><option value="zh-CN">中文</option><option value="en-US">English</option></select>
+<select id="language"><option value="zh-CN">简体中文 / 普通话</option><option value="zh-HK">繁體中文 / 粵語</option><option value="en-US">English</option></select>
+<select id="voiceSelect"></select>
 <select id="rate"><option value="0.85">慢速</option><option value="1" selected>正常</option><option value="1.15">稍快</option></select>
-<button class="primary" id="oneClickBtn">一键生成晨报</button>
-<button class="primary" id="fetchFullBtn">抓取原文</button>
-<button class="primary" id="summaryBtn">智能整理长文</button>
-<button class="primary" id="playBtn">TTS 播报晨报</button>
-<button id="podcastBtn">博客模式：朗读原文</button>
-<button class="ghost" id="clearBtn">清空缓存</button>
-<button class="ghost" id="stopBtn">停止</button>
-<button class="ghost" id="refreshBtn">刷新今日新闻</button>
+<button class="primary" id="oneClickBtn" data-i18n="oneClick">一键生成晨报</button>
+<button class="primary" id="fetchFullBtn" data-i18n="fetchFull">抓取原文</button>
+<button class="primary" id="summaryBtn" data-i18n="makeBrief">AI 整理长文</button>
+<button class="primary" id="playBtn" data-i18n="playBrief">TTS 播报晨报</button>
+<button id="podcastBtn" data-i18n="podcast">博客模式：朗读原文</button>
+<button class="ghost" id="clearBtn" data-i18n="clear">清空缓存</button>
+<button class="ghost" id="stopBtn" data-i18n="stop">停止</button>
+<button class="ghost" id="refreshBtn" data-i18n="refresh">刷新今日新闻</button>
 </div>
 <p id="status">准备加载新闻。</p>
 </section>
 
 <section class="brief-box">
-<div class="brief-title"><h2 id="summaryTitle">智能整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
-<p class="hint">会清洗网站导航/广告/页脚，把英文材料整理成中文晨报；使用 OpenRouter 生成中文晨报。</p>
+<div class="brief-title"><h2 id="summaryTitle">智能整理十分钟晨报</h2><button id="copyBtn" data-i18n="copy">复制晨报</button></div>
 <article id="smartArticle">点击“一键生成晨报”。</article>
 </section>
 
-<section class="article-box"><details><summary>已抓取/清洗后的原文材料（博客模式会读这里）</summary><div class="raw-list" id="rawList"></div></details></section>
+<section class="article-box"><details><summary id="rawSummary">已抓取/清洗后的原文材料（博客模式会读这里）</summary><div class="raw-list" id="rawList"></div></details></section>
 <main id="news"></main>
-<footer><p>需要先把 WORKER_BASE 改成你的 Cloudflare Worker 地址。</p></footer>
+<footer></footer>
 
 <script>
 const WORKER_BASE = "https://morning-brief.aliradevere.workers.dev";
@@ -77,8 +77,19 @@ const backupItems=[
 {cat:"太空",source:"NASA",title:"NASA 新闻",summary:"航天任务、发射、空间科学、地球观测与深空探索新闻入口。",link:"https://www.nasa.gov/news/"},
 {cat:"医疗",source:"WHO",title:"WHO 新闻",summary:"全球公共卫生、疾病防控、疫苗与医疗政策新闻入口。",link:"https://www.who.int/news"}];
 
-let allItems=[],currentCat="all",fullArticles={},podcastTimer=null,podcastUntil=0;
+let allItems=[],currentCat="all",fullArticles={},podcastTimer=null,podcastUntil=0,voices=[];
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const UI={
+"zh-CN":{pageTitle:"今日简报",summaryTitle:"AI 整理十分钟晨报",readySuffix:"篇文章准备中",homeTab:"首页：今日简报",tech:"科技",energy:"能源",space:"太空",medical:"医疗",saved:"收藏新闻",oneClick:"一键生成晨报",fetchFull:"抓取原文",makeBrief:"AI 整理长文",playBrief:"TTS 播报晨报",podcast:"博客模式：朗读原文",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",rawSummary:"已抓取/清洗后的原文材料（博客模式会读这里）",clickStart:"点击“一键生成晨报”。",loadingNews:"正在抓取新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",copied:"晨报已复制。",stopped:"已停止播放。",noContent:"当前分类没有内容。",noMaterial:"还没有原文材料；请先点“抓取原文”。"},
+"zh-HK":{pageTitle:"今日簡報",summaryTitle:"AI 整理十分鐘晨報",readySuffix:"篇文章準備中",homeTab:"首頁：今日簡報",tech:"科技",energy:"能源",space:"太空",medical:"醫療",saved:"收藏新聞",oneClick:"一鍵生成晨報",fetchFull:"擷取原文",makeBrief:"AI 整理長文",playBrief:"TTS 播報晨報",podcast:"博客模式：朗讀原文",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",rawSummary:"已擷取／清洗後嘅原文材料（博客模式會讀呢度）",clickStart:"撳「一鍵生成晨報」。",loadingNews:"正在擷取新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",copied:"晨報已複製。",stopped:"已停止播放。",noContent:"目前分類冇內容。",noMaterial:"仲未有原文材料；請先撳「擷取原文」。"},
+"en-US":{pageTitle:"Daily Brief",summaryTitle:"AI 10-Minute Brief",readySuffix:"articles ready",homeTab:"Home: Daily Brief",tech:"Tech",energy:"Energy",space:"Space",medical:"Medical",saved:"Saved",oneClick:"Generate Brief",fetchFull:"Fetch Articles",makeBrief:"AI Long Brief",playBrief:"TTS Brief",podcast:"Podcast: Original Text",clear:"Clear Cache",stop:"Stop",refresh:"Refresh News",copy:"Copy Brief",rawSummary:"Fetched / cleaned source materials for podcast mode",clickStart:"Click “Generate Brief”.",loadingNews:"Loading news list.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",copied:"Brief copied.",stopped:"Playback stopped.",noContent:"No content in this section.",noMaterial:"No source material yet. Please fetch articles first."}
+};
+const langNow=()=>$("#language").value;
+const txt=key=>UI[langNow()][key]||UI["zh-CN"][key]||key;
+function applyLanguageUI(){document.documentElement.lang=langNow();$("#pageTitle").textContent=txt("pageTitle");$("#summaryTitle").textContent=txt("summaryTitle");const rawSummary=$("#rawSummary");if(rawSummary)rawSummary.textContent=txt("rawSummary");$$("[data-i18n]").forEach(el=>el.textContent=txt(el.dataset.i18n));const starter=$("#smartArticle").textContent.trim();if(starter.includes("点击")||starter.includes("撳")||starter.includes("Click")||starter==="")$("#smartArticle").textContent=txt("clickStart");render();}
+function loadVoices(){if(!("speechSynthesis"in window))return;voices=speechSynthesis.getVoices();const lang=langNow();const exact=voices.filter(v=>v.lang===lang);const broader=voices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()));const list=(exact.length?exact:broader.length?broader:voices);$("#voiceSelect").innerHTML=list.map(v=>`<option value="${voices.indexOf(v)}">${v.name} (${v.lang})</option>`).join("");const preferredName=lang==="zh-HK"?/(hiugaai|tracy|wanlung|cantonese|hong kong|zh-hk|曉佳|曉曼|雲龍)/i:lang==="zh-CN"?/(xiaoxiao|xiaoyi|xiaobei|xiaohan|mandarin|zh-cn|晓晓|晓伊)/i:/(jenny|aria|guy|english|en-us)/i;const preferred=list.find(v=>preferredName.test(v.name+" "+v.lang));if(preferred)$("#voiceSelect").value=voices.indexOf(preferred);}
+if("speechSynthesis"in window)speechSynthesis.onvoiceschanged=loadVoices;
+
 function strip(html){const div=document.createElement("div");div.innerHTML=html||"";return(div.textContent||"").replace(/\s+/g," ").trim()}
 function backend(path){return WORKER_BASE.replace(/\/$/,"")+path}
 function uid(x){return btoa(unescape(encodeURIComponent(x.title+x.source))).replace(/=/g,"")}
@@ -207,49 +218,24 @@ async function fetchFullArticles(){
   $("#status").textContent="材料处理完成，可以智能整理长文。";
 }
 
-async function makeSmartBrief(){
-  const items = currentItems().slice(0,14);
-
-  if(!items.length){
-    $("#smartArticle").textContent = "当前分类没有内容。";
-    return;
-  }
-
-  $("#status").textContent = "正在调用 OpenRouter 生成中文晨报。";
-
-  const articles = items.map(item => ({
-    cat: item.cat,
-    source: item.source,
-    title: item.title,
-    summary: item.summary || "",
-    text: fullArticles[uid(item)] || item.summary || ""
-  }));
-
+async async function makeSmartBrief(){
+  const items=currentItems().slice(0,14);
+  if(!items.length){$("#smartArticle").textContent=txt("noContent");return}
+  $("#status").textContent=txt("gen");
+  const articles=items.map(item=>({cat:item.cat,source:item.source,title:item.title,summary:item.summary||"",text:fullArticles[uid(item)]||item.summary||""}));
   try{
-    const res = await fetch(backend("/brief"), {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({
-        articles
-      })
-    });
-
-    const data = await res.json();
-
+    const res=await fetch(backend("/brief"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({language:langNow(),articles})});
+    const data=await res.json();
     if(data.article){
-      $("#smartArticle").textContent = data.article;
-      $("#status").textContent = "中文晨报已生成。";
+      $("#smartArticle").textContent=data.article.replace(/\*\*(.*?)\*\*/g,"[$1]").replace(/#+\s?/g,"");
+      $("#status").textContent=txt("done");
     }else{
-      $("#smartArticle").textContent =
-        "OpenRouter返回为空：\n\n" +
-        JSON.stringify(data,null,2);
+      $("#smartArticle").textContent="OpenRouter 返回为空：\n\n"+JSON.stringify(data,null,2);
+      $("#status").textContent="OpenRouter 没有返回正文。";
     }
-
   }catch(e){
-    $("#smartArticle").textContent =
-      "调用失败：\n\n" + e.message;
+    $("#smartArticle").textContent="调用失败：\n\n"+e.message;
+    $("#status").textContent="调用 Worker 失败。";
   }
 }
 function makeEnglishBrief(items){
@@ -260,28 +246,28 @@ async function oneClick(){
   await makeSmartBrief();
   speakSmartBrief();
 }
-function speak(text){if(!("speechSynthesis"in window)){$("#status").textContent="当前浏览器不支持 TTS。";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=$("#language").value;u.rate=Number($("#rate").value);speechSynthesis.speak(u)}
+function speak(text){if(!("speechSynthesis"in window)){$("#status").textContent="当前浏览器不支持 TTS。";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=langNow();u.rate=Number($("#rate").value);const selectedVoice=voices[Number($("#voiceSelect").value)];if(selectedVoice)u.voice=selectedVoice;speechSynthesis.speak(u)}
 function speakSmartBrief(){const text=$("#smartArticle").textContent.trim();if(!text||text.includes("点击")){makeSmartBrief();speak($("#smartArticle").textContent)}else speak(text)}
 function startOriginalPodcast(){
   const zh=$("#language").value.startsWith("zh"), items=currentItems().filter(x=>fullArticles[uid(x)]).slice(0,10);
-  if(!items.length){$("#status").textContent="还没有原文材料；请先点“抓取原文”。";return}
+  if(!items.length){$("#status").textContent=txt("noMaterial");return}
   podcastUntil=Date.now()+10*60*1000;let idx=0;$("#status").textContent=zh?"博客模式开始：正在朗读清洗后的原文材料。":"Podcast mode: reading cleaned source materials.";
   function next(){
     if(Date.now()>podcastUntil||idx>=items.length){stopAll();return}
     const item=items[idx++], text=(zh?`现在朗读，来源 ${item.source}，标题 ${item.title}。`:`Reading from ${item.source}, titled ${item.title}. `)+(fullArticles[uid(item)]||"");
-    speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.slice(0,15000));u.lang=$("#language").value;u.rate=Number($("#rate").value);u.onend=()=>{if(Date.now()<=podcastUntil)podcastTimer=setTimeout(next,800)};speechSynthesis.speak(u)
+    speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.slice(0,15000));u.lang=langNow();u.rate=Number($("#rate").value);const selectedVoice=voices[Number($("#voiceSelect").value)];if(selectedVoice)u.voice=selectedVoice;u.onend=()=>{if(Date.now()<=podcastUntil)podcastTimer=setTimeout(next,800)};speechSynthesis.speak(u)
   }
   next()
 }
-function stopAll(){speechSynthesis.cancel();clearTimeout(podcastTimer);$("#status").textContent=$("#language").value.startsWith("zh")?"已停止播放。":"Playback stopped."}
+function stopAll(){speechSynthesis.cancel();clearTimeout(podcastTimer);$("#status").textContent=txt("stopped")}
 function clearCache(){localStorage.removeItem("full-articles");fullArticles={};renderRawList();$("#status").textContent="已清空原文缓存，请重新抓取。"}
 window.addEventListener("DOMContentLoaded",()=>{
   $("#dateText").textContent=new Date().toLocaleDateString("zh-CN",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
   $$(".tab").forEach(btn=>btn.onclick=()=>{$$(".tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentCat=btn.dataset.cat;render()});
   $("#oneClickBtn").onclick=oneClick;$("#fetchFullBtn").onclick=fetchFullArticles;$("#summaryBtn").onclick=makeSmartBrief;$("#playBtn").onclick=speakSmartBrief;$("#podcastBtn").onclick=startOriginalPodcast;$("#stopBtn").onclick=stopAll;$("#refreshBtn").onclick=loadNews;$("#clearBtn").onclick=clearCache;
-  $("#copyBtn").onclick=async()=>{await navigator.clipboard.writeText($("#smartArticle").textContent);$("#status").textContent="晨报已复制。"};
-  $("#language").onchange=()=>{const zh=$("#language").value.startsWith("zh");$("#pageTitle").textContent=zh?"今日简报":"Daily Brief";$("#summaryTitle").textContent=zh?"智能整理十分钟晨报":"Smart 10-Minute Brief";render()};
-  loadCacheFirst();loadNews();
+  $("#copyBtn").onclick=async()=>{await navigator.clipboard.writeText($("#smartArticle").textContent);$("#status").textContent=txt("copied")};
+  $("#language").onchange=()=>{applyLanguageUI();loadVoices()};
+  applyLanguageUI();loadVoices();loadCacheFirst();loadNews();
 });
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{})}</script>
