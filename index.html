@@ -207,19 +207,29 @@ async function fetchFullArticles(){
   $("#status").textContent="材料处理完成，可以智能整理长文。";
 }
 
-function summarizeOne(item){
-  const text=fullArticles[uid(item)]||item.summary||"";
-  const picks=pickSentences(text,item.cat,3);
-  const body=(picks.join(" ")||item.summary||item.title);
-  const zhBody=roughZh(body);
-  const point={
-    科技:"这条新闻的重点在于技术产品和基础设施是否能真正进入稳定使用。",
-    AI:"这条新闻的重点在于人工智能从概念走向真实工作流时，能力、成本和风险如何平衡。",
-    能源:"这条新闻的重点在于能源转型不仅要追求清洁，也要考虑稳定性、成本和基础设施。",
-    太空:"这条新闻的重点在于太空探索正在同时受到科研目标和商业模式推动。",
-    医疗:"这条新闻的重点在于医学进展需要看研究阶段、临床证据和真实可用性。"
-  }[item.cat]||"这条新闻值得继续关注它的实际影响。";
-  return `来自 ${item.source} 的《${item.title}》显示，${zhBody} ${point}`;
+ffunction summarizeOne(item){
+  const text = (fullArticles[uid(item)] || item.summary || "").toLowerCase();
+  const title = item.title;
+
+  const themes = [];
+  if(/ai|artificial intelligence|model|agent|deepmind|claude|search/.test(text + title)) themes.push("人工智能模型与应用");
+  if(/chip|semiconductor|computer|device|brain|implant/.test(text + title)) themes.push("芯片、设备或人机交互");
+  if(/energy|solar|battery|grid|nuclear|climate|electric/.test(text + title)) themes.push("能源转型与基础设施");
+  if(/space|nasa|launch|orbit|moon|mars|telescope/.test(text + title)) themes.push("太空探索与航天任务");
+  if(/medical|health|disease|drug|clinical|vaccine|aging|brain/.test(text + title)) themes.push("医疗健康与生命科学");
+  if(/funding|million|billion|startup|company|market/.test(text + title)) themes.push("商业化、融资或产业竞争");
+
+  const themeText = themes.length ? themes.join("、") : "相关行业的新进展";
+
+  const impact = {
+    科技:"它反映出科技产品正在从概念展示进入真实使用场景，后续要看稳定性、成本和用户接受度。",
+    AI:"它说明人工智能竞争已经不只是模型能力，而是进入搜索、代码、云服务和智能体等具体工作流。",
+    能源:"它反映出能源转型仍然要同时处理清洁化、成本、供应稳定和基础设施建设。",
+    太空:"它说明太空产业正在由科研任务、商业发射和长期基础设施共同推动。",
+    医疗:"它提示医疗进展不能只看标题中的突破，还要看研究阶段、临床证据和实际可用性。"
+  }[item.cat] || "它的后续影响需要看能否真正落地。";
+
+  return `来自 ${item.source} 的《${title}》主要涉及${themeText}。${impact}`;
 }
 
 function makeSmartBrief(){
