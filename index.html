@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#111111" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<title>今日简报｜Smart Morning Brief</title>
+<style>
+:root{--bg:#f4f4f4;--card:#fff;--text:#111;--muted:#666;--muted2:#999;--line:#ddd;--soft:#eee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+header{max-width:1180px;margin:auto;padding:32px 18px 18px;display:grid;grid-template-columns:1.25fr .75fr;gap:18px}
+.hero,.today-card,.panel,.brief-box,.card,.article-box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
+.hero{padding:28px}.kicker{margin:0 0 12px;color:var(--muted);font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+h1{margin:0;font-size:42px;letter-spacing:-.06em;line-height:1.05}
+.today-card{padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:#111;color:#fff}.date,.small{color:#cfcfcf;font-size:14px;line-height:1.55}.big-number{font-size:44px;letter-spacing:-.06em;font-weight:800}
+.panel{max-width:1180px;margin:0 auto 16px;padding:16px}.tabs,.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+button,select{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 13px;border-radius:999px;font-size:14px;cursor:pointer}
+button.active,button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}button.ghost{background:#f5f5f5}
+#status{margin:6px 0 0;color:var(--muted);font-size:14px;line-height:1.5}
+.brief-box,.article-box{max-width:1180px;margin:0 auto 16px;padding:20px}.brief-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}.hint{color:#777;font-size:13px;line-height:1.6;margin:0 0 12px}
+#smartArticle{color:#222;line-height:1.9;margin:0;white-space:pre-wrap;font-size:16px}.article-box details{border-top:1px solid var(--line);padding-top:14px}.article-box summary{cursor:pointer;font-weight:800}.raw-list{display:grid;gap:12px;margin-top:12px}.raw-item{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:16px;padding:14px}.raw-item h3{margin:0 0 8px;font-size:16px}.raw-text{color:#444;line-height:1.7;font-size:14px;max-height:170px;overflow:auto}
+main{max-width:1180px;margin:auto;padding:0 16px 42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}.card{padding:17px;min-height:238px;display:flex;flex-direction:column;gap:10px}.tag-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{width:max-content;padding:5px 9px;border-radius:999px;background:#eee;color:#333;font-size:12px;font-weight:800}.fav{border:0;padding:4px 7px;border-radius:10px;font-size:18px;background:transparent}.fav.saved{background:#111;color:#fff}.card h3{margin:0;font-size:18px;line-height:1.35;letter-spacing:-.02em}.meta{color:var(--muted2);font-size:13px}.summary{color:#444;line-height:1.6;font-size:14px}a{color:#111;text-decoration:none;margin-top:auto;font-weight:800;font-size:14px;border-bottom:1px solid #111;width:max-content}.empty{grid-column:1/-1;text-align:center;color:#777;padding:36px;background:#fff;border:1px solid var(--line);border-radius:24px}
+footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13px;line-height:1.6}
+@media(max-width:760px){header{grid-template-columns:1fr;padding-top:18px}h1{font-size:34px}.hero,.today-card,.panel,.brief-box,.article-box{border-radius:0;border-left:0;border-right:0}button,select{font-size:13px}#smartArticle{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+<section class="hero"><p class="kicker">Smart Morning Brief</p><h1 id="pageTitle">今日简报</h1></section>
+<section class="today-card"><div><div class="date" id="dateText"></div><div class="big-number" id="newsCount">0</div><div class="small" id="countText">篇文章准备中</div></div><div class="small">TTS 朗读整理后的晨报；博客模式朗读原文材料。</div></section>
+</header>
+
+<section class="panel">
+<div class="tabs">
+<button class="tab active" data-cat="all">首页：今日简报</button><button class="tab" data-cat="科技">科技</button><button class="tab" data-cat="AI">AI</button><button class="tab" data-cat="能源">能源</button><button class="tab" data-cat="太空">太空</button><button class="tab" data-cat="医疗">医疗</button><button class="tab" data-cat="收藏">收藏新闻</button>
+</div>
+<div class="controls">
+<select id="language"><option value="zh-CN">中文</option><option value="en-US">English</option></select>
+<select id="rate"><option value="0.85">慢速</option><option value="1" selected>正常</option><option value="1.15">稍快</option></select>
+<button class="primary" id="oneClickBtn">一键生成晨报</button>
+<button class="primary" id="fetchFullBtn">抓取原文</button>
+<button class="primary" id="summaryBtn">智能整理长文</button>
+<button class="primary" id="playBtn">TTS 播报晨报</button>
+<button id="podcastBtn">博客模式：朗读原文</button>
+<button class="ghost" id="stopBtn">停止</button>
+<button class="ghost" id="refreshBtn">刷新今日新闻</button>
+</div>
+<p id="status">准备加载新闻。</p>
+</section>
+
+<section class="brief-box">
+<div class="brief-title"><h2 id="summaryTitle">智能整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
+<p class="hint">会提取标题、来源、摘要和能抓到的正文，按行业分组、去重、提炼趋势，再生成一篇可朗读长文。</p>
+<article id="smartArticle">点击“一键生成晨报”。</article>
+</section>
+
+<section class="article-box"><details><summary>已抓取/整理用的原文材料（博客模式会读这里）</summary><div class="raw-list" id="rawList"></div></details></section>
+<main id="news"></main>
+<footer><p>后端接口可选：部署 Worker 后，把下面 JS 里的 WORKER_BASE 改成你的 Worker 地址。</p></footer>
+
+<script>
+const WORKER_BASE = ""; // 例如 "https://your-worker.yourname.workers.dev"
+
+const feeds=[
+{cat:"科技",source:"MIT Technology Review",url:"https://www.technologyreview.com/feed/"},
+{cat:"AI",source:"VentureBeat AI",url:"https://venturebeat.com/category/ai/feed/"},
+{cat:"能源",source:"CleanTechnica",url:"https://cleantechnica.com/feed/"},
+{cat:"太空",source:"NASA",url:"https://www.nasa.gov/rss/dyn/breaking_news.rss"},
+{cat:"医疗",source:"Medical Xpress",url:"https://medicalxpress.com/rss-feed/"}];
+const backupItems=[
+{cat:"科技",source:"MIT Technology Review",title:"MIT Technology Review 今日科技新闻",summary:"人工智能、芯片、互联网、机器人等方向的最新报道入口。",link:"https://www.technologyreview.com/"},
+{cat:"AI",source:"VentureBeat AI",title:"VentureBeat AI 新闻",summary:"AI产品、模型、产业应用、企业服务与创业公司新闻入口。",link:"https://venturebeat.com/category/ai/"},
+{cat:"能源",source:"IEA",title:"IEA 全球能源新闻",summary:"能源政策、电力、可再生能源、油气与全球市场动态入口。",link:"https://www.iea.org/news"},
+{cat:"太空",source:"NASA",title:"NASA 新闻",summary:"航天任务、发射、空间科学、地球观测与深空探索新闻入口。",link:"https://www.nasa.gov/news/"},
+{cat:"医疗",source:"WHO",title:"WHO 新闻",summary:"全球公共卫生、疾病防控、疫苗与医疗政策新闻入口。",link:"https://www.who.int/news"}];
+
+let allItems=[],currentCat="all",fullArticles={},podcastTimer=null,podcastUntil=0;
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+function strip(html){const div=document.createElement("div");div.innerHTML=html||"";return(div.textContent||"").replace(/\s+/g," ").trim()}
+function proxy(url){return"https://api.allorigins.win/raw?url="+encodeURIComponent(url)}
+function backend(path){return WORKER_BASE ? WORKER_BASE.replace(/\/$/,"")+path : ""}
+function uid(x){return btoa(unescape(encodeURIComponent(x.title+x.source))).replace(/=/g,"")}
+function savedIds(){return JSON.parse(localStorage.getItem("saved-news")||"[]")}
+function setSavedIds(ids){localStorage.setItem("saved-news",JSON.stringify(ids))}
+function isSaved(x){return savedIds().includes(uid(x))}
+function toggleSave(x){const id=uid(x);let ids=savedIds();ids=ids.includes(id)?ids.filter(v=>v!==id):[...ids,id];setSavedIds(ids);render()}
+function currentItems(){if(currentCat==="收藏")return allItems.filter(isSaved);return currentCat==="all"?allItems:allItems.filter(x=>x.cat===currentCat)}
+function splitSentences(t){return (t||"").replace(/\s+/g," ").split(/(?<=[。！？.!?])\s*/).filter(s=>s.length>18)}
+function pickSentences(text, keywords, max=4){const s=splitSentences(text);const scored=s.map(x=>({x,score:keywords.reduce((n,k)=>n+(x.toLowerCase().includes(k.toLowerCase())?1:0),0)+Math.min(x.length/160,1)}));return scored.sort((a,b)=>b.score-a.score).slice(0,max).map(o=>o.x)}
+function keywordsFor(cat){return {科技:["technology","chip","platform","device","robot","software","data","芯片","平台","设备","机器人","软件","数据"],AI:["AI","artificial intelligence","model","生成式","模型","智能","算法","训练","推理"],能源:["energy","solar","battery","electric","grid","climate","能源","电池","电网","太阳能","储能","气候"],太空:["space","NASA","launch","orbit","moon","mars","telescope","太空","发射","轨道","月球","火星","望远镜"],医疗:["medical","health","disease","drug","clinical","vaccine","医疗","健康","疾病","药物","临床","疫苗"]}[cat]||[]}
+async function loadFeed(feed){
+  let text="";
+  if(WORKER_BASE){
+    const res=await fetch(backend("/rss?url="+encodeURIComponent(feed.url))); text=await res.text();
+  }else{
+    const res=await fetch(proxy(feed.url),{cache:"no-store"}); if(!res.ok)throw new Error(feed.source); text=await res.text();
+  }
+  const xml=new DOMParser().parseFromString(text,"text/xml");
+  return Array.from(xml.querySelectorAll("item, entry")).slice(0,7).map(n=>({cat:feed.cat,source:feed.source,title:strip(n.querySelector("title")?.textContent),link:n.querySelector("link")?.getAttribute("href")||n.querySelector("link")?.textContent||"#",date:n.querySelector("pubDate, published, updated")?.textContent||"",summary:strip(n.querySelector("description, summary, content")?.textContent).slice(0,260)})).filter(x=>x.title)}
+function render(){const items=currentItems();$("#newsCount").textContent=items.length;$("#countText").textContent=$("#language").value.startsWith("zh")?"篇文章准备中":"articles ready";$("#news").innerHTML=items.length?items.map(x=>`<article class="card"><div class="tag-row"><div class="tag">${x.cat}</div><button class="fav ${isSaved(x)?"saved":""}" data-index="${allItems.indexOf(x)}">${isSaved(x)?"★":"☆"}</button></div><h3>${x.title}</h3><div class="meta">${x.source}${x.date?" · "+new Date(x.date).toLocaleString("zh-CN"):""}</div><div class="summary">${x.summary||"打开详情查看；智能整理会用可抓取正文或 RSS 摘要补齐。"}</div><a href="${x.link}" target="_blank" rel="noopener">查看原文详情 →</a></article>`).join(""):`<div class="empty">这个分类暂时没有内容。</div>`;$$(".fav").forEach(btn=>btn.onclick=()=>toggleSave(allItems[Number(btn.dataset.index)]));renderRawList()}
+function renderRawList(){const articles=currentItems().map(x=>({item:x,text:fullArticles[uid(x)]})).filter(x=>x.text);$("#rawList").innerHTML=articles.length?articles.map(({item,text})=>`<div class="raw-item"><h3>${item.title}</h3><div class="meta">${item.source} · ${item.cat}</div><div class="raw-text">${text}</div></div>`).join(""):`<div class="raw-item"><div class="raw-text">还没有抓取到材料。</div></div>`}
+async function loadNews(){$("#status").textContent="正在抓取新闻列表。";const results=await Promise.allSettled(feeds.map(loadFeed));const live=results.flatMap(r=>r.status==="fulfilled"?r.value:[]);allItems=live.length?live:backupItems;localStorage.setItem("news-cache",JSON.stringify({date:new Date().toDateString(),items:allItems}));render();$("#status").textContent=live.length?`已更新 ${live.length} 篇文章列表。`:"实时 RSS 抓取失败，已显示备用入口。"}
+function loadCacheFirst(){try{const cache=JSON.parse(localStorage.getItem("news-cache")||"{}");allItems=cache.items?.length?cache.items:backupItems}catch{allItems=backupItems}try{fullArticles=JSON.parse(localStorage.getItem("full-articles")||"{}")}catch{fullArticles={}}render()}
+async function extractArticleText(item){
+  try{
+    if(WORKER_BASE){
+      const res=await fetch(backend("/extract?url="+encodeURIComponent(item.link)));
+      const data=await res.json();
+      return data.text || "";
+    }
+    const res=await fetch(proxy(item.link),{cache:"no-store"});
+    const html=await res.text();
+    const doc=new DOMParser().parseFromString(html,"text/html");
+    doc.querySelectorAll("script,style,nav,footer,header,aside,form,noscript").forEach(n=>n.remove());
+    const candidates=[...doc.querySelectorAll("article p, main p, .article p, .post p, p")].map(p=>strip(p.textContent)).filter(t=>t.length>60);
+    return candidates.slice(0,35).join("\n\n").slice(0,12000)
+  }catch(e){return ""}
+}
+async function fetchFullArticles(){const items=currentItems().slice(0,14);$("#status").textContent=`正在抓取 ${items.length} 篇材料。`;for(let i=0;i<items.length;i++){const item=items[i],id=uid(item);if(fullArticles[id])continue;$("#status").textContent=`正在处理 ${i+1}/${items.length}：${item.title}`;const text=await extractArticleText(item);fullArticles[id]=text||`【RSS 摘要补齐】${item.summary||item.title}`;localStorage.setItem("full-articles",JSON.stringify(fullArticles));renderRawList()}$("#status").textContent="材料处理完成，可以智能整理长文。"}
+function makeSmartBrief(){const items=currentItems().slice(0,14),zh=$("#language").value.startsWith("zh");if(!items.length){$("#smartArticle").textContent=zh?"当前分类没有内容。":"No content.";return}const groups={};items.forEach(x=>(groups[x.cat]??=[]).push(x));if(!zh){$("#smartArticle").textContent=makeEnglishBrief(items,groups);$("#status").textContent="Smart brief generated.";return}let parts=[];parts.push(`今天的全球科技与产业晨报，可以按 ${Object.keys(groups).join("、")} 几条线来看。今天不是简单罗列新闻，而是把这些报道放在一起，看看技术、产业和公共议题正在往哪里走。\n`);for(const [cat,arr] of Object.entries(groups)){const kws=keywordsFor(cat);let lines=[];arr.slice(0,4).forEach(item=>{const material=fullArticles[uid(item)]||item.summary||"";const picked=pickSentences(material,kws,2).join("");lines.push(`来自 ${item.source} 的《${item.title}》显示，${picked||item.summary||"这条新闻值得继续关注。"} `)});const insight={科技:"科技线的重点在于产品与基础设施是否真正进入稳定使用，而不是只停留在发布会叙事。",AI:"AI 线最值得看的是模型能力、成本、监管和实际工作流之间的关系，单纯的新概念已经不够。",能源:"能源线的核心仍是转型与可靠性的平衡：清洁能源要增长，也要解决电网、储能和成本问题。",太空:"太空线连接的不只是探索本身，还包括通信、遥感、商业发射和国家科研能力。",医疗:"医疗线需要格外谨慎，标题中的突破不等于马上可用，要看研究阶段、样本规模和临床转化。"}[cat]||"这一类新闻的价值在于观察它怎样影响真实生活。";parts.push(`【${cat}】\n${lines.join("\n")}\n${insight}\n`)}parts.push(`综合来看，今天的新闻共同指向一个趋势：技术发展正在从“讲故事”进入“证明自己”的阶段。AI 要证明能提高效率，能源技术要证明既清洁又稳定，太空产业要证明成本和可靠性，医疗研究要证明能真正改善健康结果。对早上快速获取信息的人来说，最该记住的不是某一个标题，而是这些行业都在被同一个问题追问：它们能不能在真实世界里长期有效。\n`);parts.push(`今天优先阅读清单：\n${items.slice(0,8).map((x,i)=>`${i+1}. ${x.title}（${x.source}｜${x.cat}）`).join("\n")}`);$("#smartArticle").textContent=parts.join("\n");$("#status").textContent="智能整理长文已生成；TTS 会朗读这篇文章。"}
+function makeEnglishBrief(items,groups){let out="Today's global industry brief is organized by theme rather than by headline. The goal is to understand what these stories suggest about technology, business, science and public life.\n\n";for(const [cat,arr] of Object.entries(groups)){out+=`[${cat}]\n`;arr.slice(0,4).forEach(item=>{const material=fullArticles[uid(item)]||item.summary||"";const picked=pickSentences(material,keywordsFor(cat),2).join(" ");out+=`From ${item.source}, "${item.title}" points to ${picked||item.summary||"a development worth following"}. \n`});out+="The important question is not only what happened, but whether it can become reliable, affordable and useful in the real world.\n\n"}out+="Overall, today's stories show a shift from technological promises to practical testing. AI needs to prove productivity, energy systems need reliability, space companies need sustainable economics, and medical research needs real clinical value.\n\nTop reads:\n"+items.slice(0,8).map((x,i)=>`${i+1}. ${x.title} (${x.source}, ${x.cat})`).join("\n");return out}
+async function oneClick(){await fetchFullArticles();makeSmartBrief();speakSmartBrief()}
+function speak(text){if(!("speechSynthesis"in window)){$("#status").textContent="当前浏览器不支持 TTS。";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=$("#language").value;u.rate=Number($("#rate").value);speechSynthesis.speak(u)}
+function speakSmartBrief(){const text=$("#smartArticle").textContent.trim();if(!text||text.includes("点击")){makeSmartBrief();speak($("#smartArticle").textContent)}else speak(text)}
+function startOriginalPodcast(){const zh=$("#language").value.startsWith("zh");const items=currentItems().filter(x=>fullArticles[uid(x)]).slice(0,10);if(!items.length){$("#status").textContent="还没有原文材料；请先点“抓取原文”。";return}podcastUntil=Date.now()+10*60*1000;let idx=0;$("#status").textContent=zh?"博客模式开始：正在朗读原文/RSS 材料。":"Podcast mode: reading original materials.";function next(){if(Date.now()>podcastUntil||idx>=items.length){stopAll();return}const item=items[idx++];const text=(zh?`现在朗读，来源 ${item.source}，标题 ${item.title}。`:`Reading from ${item.source}, titled ${item.title}. `)+(fullArticles[uid(item)]||"");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.slice(0,15000));u.lang=$("#language").value;u.rate=Number($("#rate").value);u.onend=()=>{if(Date.now()<=podcastUntil)podcastTimer=setTimeout(next,800)};speechSynthesis.speak(u)}next()}
+function stopAll(){speechSynthesis.cancel();clearTimeout(podcastTimer);$("#status").textContent=$("#language").value.startsWith("zh")?"已停止播放。":"Playback stopped."}
+window.addEventListener("DOMContentLoaded",()=>{$("#dateText").textContent=new Date().toLocaleDateString("zh-CN",{weekday:"long",year:"numeric",month:"long",day:"numeric"});$$(".tab").forEach(btn=>btn.onclick=()=>{$$(".tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentCat=btn.dataset.cat;render()});$("#oneClickBtn").onclick=oneClick;$("#fetchFullBtn").onclick=fetchFullArticles;$("#summaryBtn").onclick=makeSmartBrief;$("#playBtn").onclick=speakSmartBrief;$("#podcastBtn").onclick=startOriginalPodcast;$("#stopBtn").onclick=stopAll;$("#refreshBtn").onclick=loadNews;$("#copyBtn").onclick=async()=>{await navigator.clipboard.writeText($("#smartArticle").textContent);$("#status").textContent="晨报已复制。"};$("#language").onchange=()=>{const zh=$("#language").value.startsWith("zh");$("#pageTitle").textContent=zh?"今日简报":"Daily Brief";$("#summaryTitle").textContent=zh?"智能整理十分钟晨报":"Smart 10-Minute Brief";render()};loadCacheFirst();loadNews()});
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{})}</script>
+</body>
+</html>
