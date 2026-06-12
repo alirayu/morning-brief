@@ -52,7 +52,7 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 
 <section class="brief-box">
 <div class="brief-title"><h2 id="summaryTitle">智能整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
-<p class="hint">会清洗网站导航/广告/页脚，把英文材料整理成中文晨报；不需要 AI API。</p>
+<p class="hint">会清洗网站导航/广告/页脚，把英文材料整理成中文晨报；使用 OpenRouter 生成中文晨报。</p>
 <article id="smartArticle">点击“一键生成晨报”。</article>
 </section>
 
@@ -207,33 +207,9 @@ async function fetchFullArticles(){
   $("#status").textContent="材料处理完成，可以智能整理长文。";
 }
 
-function summarizeOne(item){
-  const text = (fullArticles[uid(item)] || item.summary || "").toLowerCase();
-  const title = item.title;
-
-  const themes = [];
-  if(/ai|artificial intelligence|model|agent|deepmind|claude|search/.test(text + title)) themes.push("人工智能模型与应用");
-  if(/chip|semiconductor|computer|device|brain|implant/.test(text + title)) themes.push("芯片、设备或人机交互");
-  if(/energy|solar|battery|grid|nuclear|climate|electric/.test(text + title)) themes.push("能源转型与基础设施");
-  if(/space|nasa|launch|orbit|moon|mars|telescope/.test(text + title)) themes.push("太空探索与航天任务");
-  if(/medical|health|disease|drug|clinical|vaccine|aging|brain/.test(text + title)) themes.push("医疗健康与生命科学");
-  if(/funding|million|billion|startup|company|market/.test(text + title)) themes.push("商业化、融资或产业竞争");
-
-  const themeText = themes.length ? themes.join("、") : "相关行业的新进展";
-
-  const impact = {
-    科技:"它反映出科技产品正在从概念展示进入真实使用场景，后续要看稳定性、成本和用户接受度。",
-    AI:"它说明人工智能竞争已经不只是模型能力，而是进入搜索、代码、云服务和智能体等具体工作流。",
-    能源:"它反映出能源转型仍然要同时处理清洁化、成本、供应稳定和基础设施建设。",
-    太空:"它说明太空产业正在由科研任务、商业发射和长期基础设施共同推动。",
-    医疗:"它提示医疗进展不能只看标题中的突破，还要看研究阶段、临床证据和实际可用性。"
-  }[item.cat] || "它的后续影响需要看能否真正落地。";
-
-  return `来自 ${item.source} 的《${title}》主要涉及${themeText}。${impact}`;
-}
-
 async function makeSmartBrief(){
   const items = currentItems().slice(0,14);
+
   if(!items.length){
     $("#smartArticle").textContent = "当前分类没有内容。";
     return;
@@ -252,28 +228,38 @@ async function makeSmartBrief(){
   try{
     const res = await fetch(backend("/brief"), {
       method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ articles })
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        articles
+      })
     });
 
     const data = await res.json();
 
     if(data.article){
       $("#smartArticle").textContent = data.article;
-      $("#status").textContent = "中文晨报已生成；TTS 会朗读这篇文章。";
+      $("#status").textContent = "中文晨报已生成。";
     }else{
-      $("#smartArticle").textContent = "生成失败：" + JSON.stringify(data.raw || data);
-      $("#status").textContent = "OpenRouter 没有返回正文。";
+      $("#smartArticle").textContent =
+        "OpenRouter返回为空：\n\n" +
+        JSON.stringify(data,null,2);
     }
+
   }catch(e){
-    $("#smartArticle").textContent = "生成失败：" + String(e);
-    $("#status").textContent = "调用 Worker 失败。";
+    $("#smartArticle").textContent =
+      "调用失败：\n\n" + e.message;
   }
 }
 function makeEnglishBrief(items){
   return "Today's global industry brief:\n\n"+items.map(item=>`From ${item.source}, "${item.title}" suggests: ${pickSentences(fullArticles[uid(item)]||item.summary,item.cat,2).join(" ")||item.summary||""}`).join("\n\n");
 }
-async function oneClick(){await fetchFullArticles();makeSmartBrief();speakSmartBrief()}
+async function oneClick(){
+  await fetchFullArticles();
+  await makeSmartBrief();
+  speakSmartBrief();
+}
 function speak(text){if(!("speechSynthesis"in window)){$("#status").textContent="当前浏览器不支持 TTS。";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=$("#language").value;u.rate=Number($("#rate").value);speechSynthesis.speak(u)}
 function speakSmartBrief(){const text=$("#smartArticle").textContent.trim();if(!text||text.includes("点击")){makeSmartBrief();speak($("#smartArticle").textContent)}else speak(text)}
 function startOriginalPodcast(){
