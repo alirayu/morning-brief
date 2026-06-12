@@ -207,7 +207,7 @@ async function fetchFullArticles(){
   $("#status").textContent="材料处理完成，可以智能整理长文。";
 }
 
-ffunction summarizeOne(item){
+function summarizeOne(item){
   const text = (fullArticles[uid(item)] || item.summary || "").toLowerCase();
   const title = item.title;
 
@@ -232,23 +232,43 @@ ffunction summarizeOne(item){
   return `来自 ${item.source} 的《${title}》主要涉及${themeText}。${impact}`;
 }
 
-function makeSmartBrief(){
-  const items=currentItems().slice(0,14), zh=$("#language").value.startsWith("zh");
-  if(!items.length){$("#smartArticle").textContent=zh?"当前分类没有内容。":"No content.";return}
-  if(!zh){$("#smartArticle").textContent=makeEnglishBrief(items);$("#status").textContent="Smart brief generated.";return}
-  const groups={};items.forEach(x=>(groups[x.cat]??=[]).push(x));
-  let parts=[];
-  parts.push(`今天的全球科技与产业晨报，可以按 ${Object.keys(groups).join("、")} 几条线来看。今天的重点不是简单罗列标题，而是看这些报道共同指向什么变化。\n`);
-  for(const [cat,arr] of Object.entries(groups)){
-    parts.push(`【${cat}】`);
-    arr.slice(0,4).forEach(item=>parts.push(summarizeOne(item)));
-    const insight={科技:"整体来看，科技线正在从“新产品发布”转向“基础设施验证”。真正重要的不是功能听起来多先进，而是它能不能稳定、便宜、持续地进入用户日常。",AI:"整体来看，AI 线的竞争已经不只是模型参数，而是搜索、代码、云服务和智能体如何嵌入真实业务。风险也会随之从技术问题变成社会和治理问题。",能源:"整体来看，能源线仍然围绕清洁化、电气化和安全性展开。新能源增长很重要，但电网、储能、核能和政策配套同样决定最后效果。",太空:"整体来看，太空线的新闻通常不只关于发射本身，也关系到通信、遥感、科研能力和商业航天成本。",医疗:"整体来看，医疗线不能只看“突破”两个字。真正关键的是研究是否可靠、样本是否足够、能否进入临床，以及最终是否能改善普通人的健康。"}[cat]||"这一类新闻的共同点是，它们都需要通过真实世界的长期验证。";
-    parts.push(insight+"\n");
+async function makeSmartBrief(){
+  const items = currentItems().slice(0,14);
+  if(!items.length){
+    $("#smartArticle").textContent = "当前分类没有内容。";
+    return;
   }
-  parts.push("综合来看，今天的新闻共同指向一个趋势：技术行业正在从高速叙事进入落地检验阶段。AI 要证明生产力，能源要证明可靠性，太空要证明商业可持续，医疗要证明真实健康收益。早上只需要记住一句话：今天值得关注的不是又出现了什么新概念，而是这些技术能不能真正进入现实，并经得起成本、安全、监管和用户需求的检验。\n");
-  parts.push(`今天优先阅读清单：\n${items.slice(0,8).map((x,i)=>`${i+1}. ${x.title}（${x.source}｜${x.cat}）`).join("\n")}`);
-  $("#smartArticle").textContent=parts.join("\n");
-  $("#status").textContent="智能整理长文已生成；TTS 会朗读这篇中文晨报。";
+
+  $("#status").textContent = "正在调用 OpenRouter 生成中文晨报。";
+
+  const articles = items.map(item => ({
+    cat: item.cat,
+    source: item.source,
+    title: item.title,
+    summary: item.summary || "",
+    text: fullArticles[uid(item)] || item.summary || ""
+  }));
+
+  try{
+    const res = await fetch(backend("/brief"), {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ articles })
+    });
+
+    const data = await res.json();
+
+    if(data.article){
+      $("#smartArticle").textContent = data.article;
+      $("#status").textContent = "中文晨报已生成；TTS 会朗读这篇文章。";
+    }else{
+      $("#smartArticle").textContent = "生成失败：" + JSON.stringify(data.raw || data);
+      $("#status").textContent = "OpenRouter 没有返回正文。";
+    }
+  }catch(e){
+    $("#smartArticle").textContent = "生成失败：" + String(e);
+    $("#status").textContent = "调用 Worker 失败。";
+  }
 }
 function makeEnglishBrief(items){
   return "Today's global industry brief:\n\n"+items.map(item=>`From ${item.source}, "${item.title}" suggests: ${pickSentences(fullArticles[uid(item)]||item.summary,item.cat,2).join(" ")||item.summary||""}`).join("\n\n");
