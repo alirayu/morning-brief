@@ -7,22 +7,43 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <title>今日简报｜Smart Morning Brief</title>
 <style>
-:root{--bg:#f4f4f4;--card:#fff;--text:#111;--muted:#666;--muted2:#999;--line:#ddd;--soft:#eee}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+:root{--bg:#f4f4f4;--card:#fff;--text:#111;--muted:#666;--muted2:#999;--line:#ddd;--orange:#ff8a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
 header{max-width:1180px;margin:auto;padding:32px 18px 18px;display:grid;grid-template-columns:1.25fr .75fr;gap:18px}
-.hero,.today-card,.panel,.brief-box,.card,.article-box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
+.hero,.today-card,.panel,.brief-box,.card,.article-box,.player-box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
 .hero{padding:28px}.kicker{margin:0 0 12px;color:var(--muted);font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
 h1{margin:0;font-size:42px;letter-spacing:-.06em;line-height:1.05}
-.today-card{padding:22px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:#111;color:#fff}.date,.small{color:#cfcfcf;font-size:14px;line-height:1.55}.big-number{font-size:44px;letter-spacing:-.06em;font-weight:800}
-.panel{max-width:1180px;margin:0 auto 16px;padding:16px}.tabs,.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-button,select{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 13px;border-radius:999px;font-size:14px;cursor:pointer;max-width:280px}
-button.active,button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}button.ghost{background:#f5f5f5}
+.today-card{padding:22px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:#111;color:#fff}
+.date,.small{color:#cfcfcf;font-size:14px;line-height:1.55}.big-number{font-size:44px;letter-spacing:-.06em;font-weight:800}
+.panel{max-width:1180px;margin:0 auto 16px;padding:16px}.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+button,select{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 13px;border-radius:999px;font-size:14px;cursor:pointer;max-width:300px}
+button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}button.ghost{background:#f5f5f5}
 #status{margin:6px 0 0;color:var(--muted);font-size:14px;line-height:1.5}
-.brief-box,.article-box{max-width:1180px;margin:0 auto 16px;padding:20px}.brief-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}.hint{display:none}
-#smartArticle{color:#222;line-height:1.9;margin:0;white-space:pre-wrap;font-size:16px}.article-box details{border-top:1px solid var(--line);padding-top:14px}.article-box summary{cursor:pointer;font-weight:800}.raw-list{display:grid;gap:12px;margin-top:12px}.raw-item{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:16px;padding:14px}.raw-item h3{margin:0 0 8px;font-size:16px}.raw-text{color:#444;line-height:1.7;font-size:14px;max-height:170px;overflow:auto}
-main{max-width:1180px;margin:auto;padding:0 16px 42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}.card{padding:17px;min-height:238px;display:flex;flex-direction:column;gap:10px}.tag-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{width:max-content;padding:5px 9px;border-radius:999px;background:#eee;color:#333;font-size:12px;font-weight:800}.fav{border:0;padding:4px 7px;border-radius:10px;font-size:18px;background:transparent}.fav.saved{background:#111;color:#fff}.card h3{margin:0;font-size:18px;line-height:1.35;letter-spacing:-.02em}.meta{color:var(--muted2);font-size:13px}.summary{color:#444;line-height:1.6;font-size:14px}a{color:#111;text-decoration:none;margin-top:auto;font-weight:800;font-size:14px;border-bottom:1px solid #111;width:max-content}.empty{grid-column:1/-1;text-align:center;color:#777;padding:36px;background:#fff;border:1px solid var(--line);border-radius:24px}
+.brief-box,.article-box,.player-box{max-width:1180px;margin:0 auto 16px;padding:20px}
+.brief-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}
+#smartArticle{color:#222;line-height:1.9;margin:0;white-space:pre-wrap;font-size:16px}
+.player-box{display:none}
+.player-row{display:flex;align-items:center;gap:12px}
+#playerToggle{width:42px;height:42px;border-radius:50%;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0}
+#progressRange{flex:1;accent-color:var(--orange)}
+#progressText{color:var(--muted);font-size:13px;min-width:80px;text-align:right}
+.sentence-view{margin-top:14px;max-height:220px;overflow:auto;line-height:1.8;color:#444;border-top:1px solid var(--line);padding-top:12px}
+.sentence{display:block;padding:4px 6px;border-radius:8px}
+.sentence.active{background:rgba(255,138,0,.16);color:#c65f00;font-weight:800}
+.article-box details{border-top:1px solid var(--line);padding-top:14px}.article-box summary{cursor:pointer;font-weight:800}
+.raw-list{display:grid;gap:12px;margin-top:12px}.raw-item{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:16px;padding:14px}
+.raw-item h3{margin:0 0 8px;font-size:16px}.raw-text{color:#444;line-height:1.7;font-size:14px;max-height:170px;overflow:auto}
+main{max-width:1180px;margin:auto;padding:0 16px 42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.card{padding:17px;min-height:238px;display:flex;flex-direction:column;gap:10px}.tag-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tag{width:max-content;padding:5px 9px;border-radius:999px;background:#eee;color:#333;font-size:12px;font-weight:800}
+.fav{border:0;padding:4px 7px;border-radius:10px;font-size:18px;background:transparent}.fav.saved{background:#111;color:#fff}
+.card h3{margin:0;font-size:18px;line-height:1.35;letter-spacing:-.02em}.meta{color:var(--muted2);font-size:13px}.summary{color:#444;line-height:1.6;font-size:14px}
+a{color:#111;text-decoration:none;margin-top:auto;font-weight:800;font-size:14px;border-bottom:1px solid #111;width:max-content}
+.empty{grid-column:1/-1;text-align:center;color:#777;padding:36px;background:#fff;border:1px solid var(--line);border-radius:24px}
 footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13px;line-height:1.6}
-@media(max-width:760px){header{grid-template-columns:1fr;padding-top:18px}h1{font-size:34px}.hero,.today-card,.panel,.brief-box,.article-box{border-radius:0;border-left:0;border-right:0}button,select{font-size:13px;max-width:100%}#smartArticle{font-size:15px}}
+@media(max-width:760px){header{grid-template-columns:1fr;padding-top:18px}h1{font-size:34px}.hero,.today-card,.panel,.brief-box,.article-box,.player-box{border-radius:0;border-left:0;border-right:0}button,select{font-size:13px;max-width:100%}.player-row{flex-wrap:wrap}#progressRange{min-width:220px}#smartArticle{font-size:15px}}
 </style>
 </head>
 <body>
@@ -32,10 +53,16 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 </header>
 
 <section class="panel">
-<div class="tabs">
-<button class="tab active" data-cat="all" data-i18n="homeTab">首页：今日简报</button><button class="tab" data-cat="科技" data-i18n="tech">科技</button><button class="tab" data-cat="AI">AI</button><button class="tab" data-cat="能源" data-i18n="energy">能源</button><button class="tab" data-cat="太空" data-i18n="space">太空</button><button class="tab" data-cat="医疗" data-i18n="medical">医疗</button><button class="tab" data-cat="收藏" data-i18n="saved">收藏新闻</button>
-</div>
 <div class="controls">
+<select id="categorySelect">
+  <option value="all">首页：今日简报</option>
+  <option value="科技">科技</option>
+  <option value="AI">AI</option>
+  <option value="能源">能源</option>
+  <option value="太空">太空</option>
+  <option value="医疗">医疗</option>
+  <option value="收藏">收藏新闻</option>
+</select>
 <select id="language">
   <option value="zh-CN">简体中文 / 普通话</option>
   <option value="zh-HK">繁體中文 / 粵語</option>
@@ -43,89 +70,92 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 </select>
 <select id="voiceSelect"><option value="">语音加载中</option></select>
 <select id="rate"><option value="0.85">慢速</option><option value="1" selected>正常</option><option value="1.15">稍快</option></select>
-<button class="primary" id="oneClickBtn" data-i18n="oneClick">一键生成晨报</button>
-<button class="primary" id="fetchFullBtn" data-i18n="fetchFull">抓取原文</button>
-<button class="primary" id="summaryBtn" data-i18n="makeBrief">AI 整理长文</button>
-<button class="primary" id="playBtn" data-i18n="playBrief">TTS 播报晨报</button>
-<button id="podcastBtn" data-i18n="podcast">博客模式：朗读原文</button>
-<button class="ghost" id="clearBtn" data-i18n="clear">清空缓存</button>
-<button class="ghost" id="stopBtn" data-i18n="stop">停止</button>
-<button class="ghost" id="refreshBtn" data-i18n="refresh">刷新今日新闻</button>
+<button class="primary" id="summaryBtn">生成晨报</button>
+<button class="primary" id="fetchFullBtn">抓取原文</button>
+<button class="primary" id="playBtn">播放晨报</button>
+<button id="podcastBtn">朗读原文</button>
+<button class="ghost" id="clearBtn">清空缓存</button>
+<button class="ghost" id="stopBtn">停止</button>
+<button class="ghost" id="refreshBtn">刷新今日新闻</button>
 </div>
 <p id="status">准备加载新闻。</p>
 </section>
 
-<section class="brief-box">
-<div class="brief-title"><h2 id="summaryTitle">AI 整理十分钟晨报</h2><button id="copyBtn" data-i18n="copy">复制晨报</button></div>
-<article id="smartArticle">点击“一键生成晨报”。</article>
+<section class="player-box" id="playerBox">
+  <div class="player-row">
+    <button class="primary" id="playerToggle">▶</button>
+    <input type="range" id="progressRange" min="0" max="0" value="0" />
+    <div id="progressText">0 / 0</div>
+  </div>
+  <div class="sentence-view" id="sentenceView"></div>
 </section>
 
-<section class="article-box"><details><summary id="rawSummary">已抓取/清洗后的原文材料（博客模式会读这里）</summary><div class="raw-list" id="rawList"></div></details></section>
+<section class="brief-box">
+<div class="brief-title"><h2 id="summaryTitle">AI 整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
+<article id="smartArticle">点击“生成晨报”。</article>
+</section>
+
+<section class="article-box"><details><summary id="rawSummary">已抓取/清洗后的原文材料（朗读原文会读这里）</summary><div class="raw-list" id="rawList"></div></details></section>
 <main id="news"></main>
 <footer></footer>
 
 <script>
 const WORKER_BASE = "https://morning-brief.aliradevere.workers.dev";
 
-const UI = {
-  "zh-CN": {
-    pageTitle:"今日简报", summaryTitle:"AI 整理十分钟晨报",
-    homeTab:"首页：今日简报", tech:"科技", energy:"能源", space:"太空", medical:"医疗", saved:"收藏新闻",
-    oneClick:"一键生成晨报", fetchFull:"抓取原文", makeBrief:"AI 整理长文", playBrief:"TTS 播报晨报",
-    podcast:"博客模式：朗读原文", clear:"清空缓存", stop:"停止", refresh:"刷新今日新闻", copy:"复制晨报",
-    rawSummary:"已抓取/清洗后的原文材料（博客模式会读这里）",
-    init:"准备加载新闻。", clickStart:"点击“一键生成晨报”。",
-    loadingNews:"正在抓取新闻列表。", gen:"正在调用 OpenRouter 生成简体中文晨报。",
-    done:"简体中文晨报已生成。", copied:"晨报已复制。", stopped:"已停止播放。",
-    noContent:"当前分类没有内容。", noRaw:"还没有抓取到材料。", noRawToRead:"还没有原文材料；请先点“抓取原文”。"
-  },
-  "zh-HK": {
-    pageTitle:"今日簡報", summaryTitle:"AI 整理十分鐘晨報",
-    homeTab:"首頁：今日簡報", tech:"科技", energy:"能源", space:"太空", medical:"醫療", saved:"收藏新聞",
-    oneClick:"一鍵生成晨報", fetchFull:"擷取原文", makeBrief:"AI 整理長文", playBrief:"TTS 播報晨報",
-    podcast:"博客模式：朗讀原文", clear:"清空快取", stop:"停止", refresh:"刷新今日新聞", copy:"複製晨報",
-    rawSummary:"已擷取／清洗後嘅原文材料（博客模式會讀呢度）",
-    init:"準備載入新聞。", clickStart:"撳「一鍵生成晨報」。",
-    loadingNews:"正在擷取新聞列表。", gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",
-    done:"繁體中文／粵語晨報已生成。", copied:"晨報已複製。", stopped:"已停止播放。",
-    noContent:"目前分類冇內容。", noRaw:"暫時未擷取到材料。", noRawToRead:"仲未有原文材料；請先撳「擷取原文」。"
-  },
-  "en-US": {
-    pageTitle:"Daily Brief", summaryTitle:"AI 10-Minute Brief",
-    homeTab:"Home: Daily Brief", tech:"Tech", energy:"Energy", space:"Space", medical:"Medical", saved:"Saved",
-    oneClick:"Generate Brief", fetchFull:"Fetch Articles", makeBrief:"AI Long Brief", playBrief:"TTS Brief",
-    podcast:"Podcast: Original Text", clear:"Clear Cache", stop:"Stop", refresh:"Refresh News", copy:"Copy Brief",
-    rawSummary:"Fetched / cleaned source materials for podcast mode",
-    init:"Ready to load news.", clickStart:"Click “Generate Brief”.",
-    loadingNews:"Loading news list.", gen:"Calling OpenRouter to generate English brief.",
-    done:"English brief generated.", copied:"Brief copied.", stopped:"Playback stopped.",
-    noContent:"No content in this category.", noRaw:"No source materials yet.", noRawToRead:"No source materials yet. Fetch articles first."
-  }
+const UI={
+"zh-CN":{pageTitle:"今日简报",summaryTitle:"AI 整理十分钟晨报",categoryAll:"首页：今日简报",tech:"科技",energy:"能源",space:"太空",medical:"医疗",saved:"收藏新闻",generate:"生成晨报",fetch:"抓取原文",play:"播放晨报",readOriginal:"朗读原文",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",raw:"已抓取/清洗后的原文材料（朗读原文会读这里）",click:"点击“生成晨报”。",ready:"篇文章准备中",loading:"正在抓取新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",noContent:"今天这个分类暂无新闻。",noRaw:"还没有抓取到材料。",noRawToRead:"还没有原文材料；请先点“抓取原文”。",copied:"晨报已复制。",stopped:"已停止播放。"},
+"zh-HK":{pageTitle:"今日簡報",summaryTitle:"AI 整理十分鐘晨報",categoryAll:"首頁：今日簡報",tech:"科技",energy:"能源",space:"太空",medical:"醫療",saved:"收藏新聞",generate:"生成晨報",fetch:"擷取原文",play:"播放晨報",readOriginal:"朗讀原文",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",raw:"已擷取／清洗後嘅原文材料（朗讀原文會讀呢度）",click:"撳「生成晨報」。",ready:"篇文章準備中",loading:"正在擷取新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",noContent:"今日呢個分類暫時冇新聞。",noRaw:"暫時未擷取到材料。",noRawToRead:"仲未有原文材料；請先撳「擷取原文」。",copied:"晨報已複製。",stopped:"已停止播放。"},
+"en-US":{pageTitle:"Daily Brief",summaryTitle:"AI 10-Minute Brief",categoryAll:"Home: Daily Brief",tech:"Tech",energy:"Energy",space:"Space",medical:"Medical",saved:"Saved News",generate:"Generate Brief",fetch:"Fetch Articles",play:"Play Brief",readOriginal:"Read Original",clear:"Clear Cache",stop:"Stop",refresh:"Refresh Today",copy:"Copy Brief",raw:"Fetched / cleaned source materials",click:"Click “Generate Brief”.",ready:"articles ready",loading:"Loading today’s news.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",noContent:"No news in this category today.",noRaw:"No source materials yet.",noRawToRead:"No source materials yet. Fetch articles first.",copied:"Brief copied.",stopped:"Playback stopped."}
 };
 
 const feeds=[
-{cat:"科技",source:"MIT Technology Review",url:"https://www.technologyreview.com/feed/"},
-{cat:"AI",source:"VentureBeat AI",url:"https://venturebeat.com/category/ai/feed/"},
-{cat:"能源",source:"CleanTechnica",url:"https://cleantechnica.com/feed/"},
-{cat:"太空",source:"NASA",url:"https://www.nasa.gov/rss/dyn/breaking_news.rss"},
-{cat:"医疗",source:"Medical Xpress",url:"https://medicalxpress.com/rss-feed/"}];
+  // 综合 / 首页：不同国家权威媒体
+  {cat:"科技",source:"BBC Technology｜英国",url:"https://feeds.bbci.co.uk/news/technology/rss.xml"},
+  {cat:"科技",source:"BBC Science & Environment｜英国",url:"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"},
+  {cat:"科技",source:"NPR Science｜美国",url:"https://feeds.npr.org/1007/rss.xml"},
+  {cat:"科技",source:"DW Science｜德国",url:"https://rss.dw.com/xml/rss-en-sci"},
+  {cat:"科技",source:"France 24 Technology｜法国",url:"https://www.france24.com/en/rss"},
+  {cat:"科技",source:"NHK World｜日本",url:"https://www3.nhk.or.jp/rss/news/cat0.xml"},
+  {cat:"科技",source:"CBC Technology & Science｜加拿大",url:"https://www.cbc.ca/cmlink/rss-technology"},
+  {cat:"科技",source:"ABC Science｜澳大利亚",url:"https://www.abc.net.au/news/feed/51120/rss.xml"},
+  {cat:"科技",source:"CNA Technology｜新加坡",url:"https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml"},
 
-const backupItems=[
-{cat:"科技",source:"MIT Technology Review",title:"MIT Technology Review 今日科技新闻",summary:"人工智能、芯片、互联网、机器人等方向的最新报道入口。",link:"https://www.technologyreview.com/"},
-{cat:"AI",source:"VentureBeat AI",title:"VentureBeat AI 新闻",summary:"AI产品、模型、产业应用、企业服务与创业公司新闻入口。",link:"https://venturebeat.com/category/ai/"},
-{cat:"能源",source:"IEA",title:"IEA 全球能源新闻",summary:"能源政策、电力、可再生能源、油气与全球市场动态入口。",link:"https://www.iea.org/news"},
-{cat:"太空",source:"NASA",title:"NASA 新闻",summary:"航天任务、发射、空间科学、地球观测与深空探索新闻入口。",link:"https://www.nasa.gov/news/"},
-{cat:"医疗",source:"WHO",title:"WHO 新闻",summary:"全球公共卫生、疾病防控、疫苗与医疗政策新闻入口。",link:"https://www.who.int/news"}];
+  // AI
+  {cat:"AI",source:"MIT Technology Review AI｜美国",url:"https://www.technologyreview.com/feed/"},
+  {cat:"AI",source:"VentureBeat AI｜美国",url:"https://venturebeat.com/category/ai/feed/"},
+  {cat:"AI",source:"The Verge AI｜美国",url:"https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"},
+  {cat:"AI",source:"TechCrunch AI｜美国",url:"https://techcrunch.com/category/artificial-intelligence/feed/"},
 
-let allItems=[],currentCat="all",fullArticles={},podcastTimer=null,podcastUntil=0,voices=[];
+  // 能源
+  {cat:"能源",source:"IEA News｜国际能源署",url:"https://www.iea.org/rss/news.xml"},
+  {cat:"能源",source:"CleanTechnica｜美国",url:"https://cleantechnica.com/feed/"},
+  {cat:"能源",source:"Energy Monitor｜英国",url:"https://www.energymonitor.ai/feed/"},
+  {cat:"能源",source:"RenewEconomy｜澳大利亚",url:"https://reneweconomy.com.au/feed/"},
+
+  // 太空
+  {cat:"太空",source:"NASA Breaking News｜美国",url:"https://www.nasa.gov/rss/dyn/breaking_news.rss"},
+  {cat:"太空",source:"ESA News｜欧洲航天局",url:"https://www.esa.int/rssfeed/Our_Activities/Space_News"},
+  {cat:"太空",source:"SpaceNews｜美国",url:"https://spacenews.com/feed/"},
+  {cat:"太空",source:"Universe Today｜加拿大",url:"https://www.universetoday.com/feed/"},
+
+  // 医疗
+  {cat:"医疗",source:"BBC Health｜英国",url:"https://feeds.bbci.co.uk/news/health/rss.xml"},
+  {cat:"医疗",source:"WHO News｜世界卫生组织",url:"https://www.who.int/rss-feeds/news-english.xml"},
+  {cat:"医疗",source:"Medical Xpress｜国际医学科技",url:"https://medicalxpress.com/rss-feed/"},
+  {cat:"医疗",source:"NIH News｜美国国立卫生研究院",url:"https://www.nih.gov/news-events/news-releases/feed.xml"}
+];
+
+let allItems=[],currentCat="all",fullArticles={},voices=[];
+let player={sentences:[],index:0,isPlaying:false,isPaused:false,mode:""};
 
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const langNow=()=>$("#language").value;
-const txt=(key)=>UI[langNow()][key] || UI["zh-CN"][key] || key;
-
-function strip(html){const div=document.createElement("div");div.innerHTML=html||"";return(div.textContent||"").replace(/\s+/g," ").trim()}
+const t=k=>UI[langNow()][k]||UI["zh-CN"][k]||k;
 function backend(path){return WORKER_BASE.replace(/\/$/,"")+path}
+function strip(html){const div=document.createElement("div");div.innerHTML=html||"";return(div.textContent||"").replace(/\s+/g," ").trim()}
 function uid(x){return btoa(unescape(encodeURIComponent((x.title||"")+(x.source||"")))).replace(/=/g,"")}
+function todayKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function isTodayDate(dateStr){if(!dateStr)return false;const d=new Date(dateStr);if(isNaN(d))return false;return todayKey(d)===todayKey(new Date())}
 function savedIds(){return JSON.parse(localStorage.getItem("saved-news")||"[]")}
 function setSavedIds(ids){localStorage.setItem("saved-news",JSON.stringify(ids))}
 function isSaved(x){return savedIds().includes(uid(x))}
@@ -133,73 +163,85 @@ function toggleSave(x){const id=uid(x);let ids=savedIds();ids=ids.includes(id)?i
 function currentItems(){if(currentCat==="收藏")return allItems.filter(isSaved);return currentCat==="all"?allItems:allItems.filter(x=>x.cat===currentCat)}
 
 function applyLanguageUI(){
-  document.documentElement.lang = langNow();
-  $("#pageTitle").textContent=txt("pageTitle");
-  $("#summaryTitle").textContent=txt("summaryTitle");
-  $("#rawSummary").textContent=txt("rawSummary");
-  $$("[data-i18n]").forEach(el=>el.textContent=txt(el.dataset.i18n));
-  const currentText=$("#smartArticle").textContent.trim();
-  if(!currentText || currentText.includes("点击") || currentText.includes("撳") || currentText.includes("Click")){
-    $("#smartArticle").textContent=txt("clickStart");
-  }
+  document.documentElement.lang=langNow();
+  $("#pageTitle").textContent=t("pageTitle");
+  $("#summaryTitle").textContent=t("summaryTitle");
+  $("#summaryBtn").textContent=t("generate");
+  $("#fetchFullBtn").textContent=t("fetch");
+  $("#playBtn").textContent=t("play");
+  $("#podcastBtn").textContent=t("readOriginal");
+  $("#clearBtn").textContent=t("clear");
+  $("#stopBtn").textContent=t("stop");
+  $("#refreshBtn").textContent=t("refresh");
+  $("#copyBtn").textContent=t("copy");
+  $("#rawSummary").textContent=t("raw");
+  const opts=$("#categorySelect").options;
+  opts[0].textContent=t("categoryAll");opts[1].textContent=t("tech");opts[3].textContent=t("energy");opts[4].textContent=t("space");opts[5].textContent=t("medical");opts[6].textContent=t("saved");
+  const s=$("#smartArticle").textContent.trim();
+  if(!s||s.includes("点击")||s.includes("撳")||s.includes("Click")) $("#smartArticle").textContent=t("click");
   render();
 }
 
 function loadVoices(){
-  voices = speechSynthesis.getVoices();
-  const voiceSelect = $("#voiceSelect");
-  if(!voiceSelect) return;
-
-  if(!voices.length){
-    voiceSelect.innerHTML = `<option value="">语音加载中</option>`;
-    return;
-  }
-
-  const lang = langNow();
-  let list = voices.filter(v => v.lang === lang);
-
-  if(!list.length && lang === "zh-HK"){
-    list = voices.filter(v =>
-      (v.lang || "").includes("zh-HK") ||
-      /cantonese|hong kong|hiugaai|tracy|wanlung|粵|粤/i.test(v.name)
-    );
-  }
-
-  if(!list.length && lang === "zh-CN"){
-    list = voices.filter(v =>
-      (v.lang || "").includes("zh-CN") ||
-      /mandarin|xiaoxiao|xiaoyi|xiaobei|xiaohan|putonghua|普通话|普通話/i.test(v.name)
-    );
-  }
-
-  if(!list.length && lang === "en-US"){
-    list = voices.filter(v =>
-      (v.lang || "").toLowerCase().startsWith("en") ||
-      /jenny|aria|guy|english|en-us/i.test(v.name)
-    );
-  }
-
-  if(!list.length) list = voices;
-
-  voiceSelect.innerHTML = list
-    .map(v => `<option value="${voices.indexOf(v)}">${v.name} (${v.lang})</option>`)
-    .join("");
-
-  const preferredPattern = lang==="zh-HK" ? /(hiugaai|tracy|wanlung|cantonese|hong kong|zh-hk|粵|粤)/i
-    : lang==="zh-CN" ? /(xiaoxiao|xiaoyi|xiaobei|xiaohan|mandarin|zh-cn|普通话|普通話)/i
-    : /(jenny|aria|guy|english|en-us)/i;
-
-  const preferred = list.find(v => preferredPattern.test((v.name||"")+" "+(v.lang||"")));
-  if(preferred) voiceSelect.value = voices.indexOf(preferred);
+  voices=speechSynthesis.getVoices();
+  const sel=$("#voiceSelect");
+  if(!voices.length){sel.innerHTML=`<option value="">语音加载中</option>`;return}
+  const lang=langNow();
+  let list=voices.filter(v=>v.lang===lang);
+  if(!list.length && lang==="zh-HK") list=voices.filter(v=>(v.lang||"").includes("zh-HK")||/cantonese|hong kong|hiugaai|tracy|wanlung|粵|粤/i.test(v.name));
+  if(!list.length && lang==="zh-CN") list=voices.filter(v=>(v.lang||"").includes("zh-CN")||/mandarin|xiaoxiao|xiaoyi|xiaobei|xiaohan|普通话|普通話/i.test(v.name));
+  if(!list.length && lang==="en-US") list=voices.filter(v=>(v.lang||"").toLowerCase().startsWith("en")||/jenny|aria|guy|english/i.test(v.name));
+  if(!list.length) list=voices;
+  sel.innerHTML=list.map(v=>`<option value="${voices.indexOf(v)}">${v.name} (${v.lang})</option>`).join("");
+  const pat=lang==="zh-HK"?/(hiugaai|tracy|wanlung|cantonese|hong kong|zh-hk|粵|粤)/i:lang==="zh-CN"?/(xiaoxiao|xiaoyi|xiaobei|xiaohan|mandarin|zh-cn|普通话|普通話)/i:/(jenny|aria|guy|english|en-us)/i;
+  const preferred=list.find(v=>pat.test((v.name||"")+" "+(v.lang||"")));
+  if(preferred) sel.value=voices.indexOf(preferred);
 }
-speechSynthesis.onvoiceschanged = loadVoices;
+speechSynthesis.onvoiceschanged=loadVoices;
+
+function splitForPlayback(text){
+  return (text||"").replace(/\s+/g," ").split(/(?<=[。！？.!?])\s+|(?<=[。！？.!?])/).map(s=>s.trim()).filter(s=>s.length>0);
+}
+function showPlayer(sentences,mode){
+  player.sentences=sentences;player.index=0;player.mode=mode;player.isPlaying=false;player.isPaused=false;
+  $("#playerBox").style.display="block";
+  $("#progressRange").max=Math.max(sentences.length-1,0);
+  $("#progressRange").value=0;
+  renderSentenceView();
+}
+function renderSentenceView(){
+  const total=player.sentences.length;
+  $("#progressText").textContent=total?`${player.index+1} / ${total}`:"0 / 0";
+  $("#progressRange").value=player.index;
+  $("#playerToggle").textContent=player.isPlaying&&!player.isPaused?"Ⅱ":"▶";
+  $("#sentenceView").innerHTML=player.sentences.map((s,i)=>`<span class="sentence ${i===player.index?"active":""}" data-i="${i}">${s}</span>`).join("");
+  const active=$("#sentenceView .active");
+  if(active) active.scrollIntoView({block:"center",behavior:"smooth"});
+}
+function speakCurrent(){
+  if(!player.sentences.length)return;
+  speechSynthesis.cancel();
+  player.isPlaying=true;player.isPaused=false;renderSentenceView();
+  const u=new SpeechSynthesisUtterance(player.sentences[player.index]);
+  u.lang=langNow();u.rate=Number($("#rate").value);
+  const selected=voices[Number($("#voiceSelect").value)];
+  if(selected)u.voice=selected;
+  u.onend=()=>{if(!player.isPlaying||player.isPaused)return;if(player.index<player.sentences.length-1){player.index++;speakCurrent()}else{player.isPlaying=false;renderSentenceView()}};
+  speechSynthesis.speak(u);
+}
+function togglePlayer(){
+  if(!player.sentences.length)return;
+  if(player.isPlaying&&!player.isPaused){speechSynthesis.pause();player.isPaused=true;renderSentenceView();return}
+  if(player.isPlaying&&player.isPaused){speechSynthesis.resume();player.isPaused=false;renderSentenceView();return}
+  speakCurrent();
+}
 
 async function loadFeed(feed){
   const res=await fetch(backend("/rss?url="+encodeURIComponent(feed.url)));
-  if(!res.ok) throw new Error(feed.source);
+  if(!res.ok)throw new Error(feed.source);
   const text=await res.text();
   const xml=new DOMParser().parseFromString(text,"text/xml");
-  return Array.from(xml.querySelectorAll("item, entry")).slice(0,7).map(n=>({
+  return Array.from(xml.querySelectorAll("item, entry")).slice(0,12).map(n=>({
     cat:feed.cat,source:feed.source,title:strip(n.querySelector("title")?.textContent),
     link:n.querySelector("link")?.getAttribute("href")||n.querySelector("link")?.textContent||"#",
     date:n.querySelector("pubDate, published, updated")?.textContent||"",
@@ -210,179 +252,80 @@ async function loadFeed(feed){
 function render(){
   const items=currentItems();
   $("#newsCount").textContent=items.length;
-  $("#countText").textContent=langNow()==="en-US" ? "articles ready" : "篇文章准备中";
-  $("#news").innerHTML=items.length?items.map(x=>`<article class="card"><div class="tag-row"><div class="tag">${x.cat}</div><button class="fav ${isSaved(x)?"saved":""}" data-index="${allItems.indexOf(x)}">${isSaved(x)?"★":"☆"}</button></div><h3>${x.title}</h3><div class="meta">${x.source}${x.date?" · "+new Date(x.date).toLocaleString("zh-CN"):""}</div><div class="summary">${x.summary||"抓取原文后会参与晨报整理。"}</div><a href="${x.link}" target="_blank" rel="noopener">查看原文详情 →</a></article>`).join(""):`<div class="empty">${txt("noContent")}</div>`;
+  $("#countText").textContent=t("ready");
+  $("#news").innerHTML=items.length?items.map(x=>`<article class="card"><div class="tag-row"><div class="tag">${x.cat}</div><button class="fav ${isSaved(x)?"saved":""}" data-index="${allItems.indexOf(x)}">${isSaved(x)?"★":"☆"}</button></div><h3>${x.title}</h3><div class="meta">${x.source}${x.date?" · "+new Date(x.date).toLocaleString("zh-CN"):""}</div><div class="summary">${x.summary||""}</div><a href="${x.link}" target="_blank" rel="noopener">查看原文详情 →</a></article>`).join(""):`<div class="empty">${t("noContent")}</div>`;
   $$(".fav").forEach(btn=>btn.onclick=()=>toggleSave(allItems[Number(btn.dataset.index)]));
   renderRawList();
 }
-
 function renderRawList(){
   const articles=currentItems().map(x=>({item:x,text:fullArticles[uid(x)]})).filter(x=>x.text);
-  $("#rawList").innerHTML=articles.length?articles.map(({item,text})=>`<div class="raw-item"><h3>${item.title}</h3><div class="meta">${item.source} · ${item.cat}</div><div class="raw-text">${text}</div></div>`).join(""):`<div class="raw-item"><div class="raw-text">${txt("noRaw")}</div></div>`;
+  $("#rawList").innerHTML=articles.length?articles.map(({item,text})=>`<div class="raw-item"><h3>${item.title}</h3><div class="meta">${item.source} · ${item.cat}</div><div class="raw-text">${text}</div></div>`).join(""):`<div class="raw-item"><div class="raw-text">${t("noRaw")}</div></div>`;
 }
-
-function getSavedNewsCache(){
-  try{return JSON.parse(localStorage.getItem("last-successful-news") || "{}")}catch{return {}}
-}
-
-function saveSuccessfulNews(items){
-  if(items && items.length){
-    localStorage.setItem("last-successful-news", JSON.stringify({
-      savedAt: new Date().toISOString(),
-      dateText: new Date().toLocaleDateString("zh-CN"),
-      items
-    }));
-  }
-}
-
 function loadCacheFirst(){
-  const cache = getSavedNewsCache();
-  if(cache.items && cache.items.length){
-    allItems = cache.items;
-    $("#status").textContent = `已显示上次缓存新闻，缓存日期：${cache.dateText || "未知"}。`;
-  }else{
-    allItems = backupItems;
-    $("#status").textContent = "暂无缓存，已显示备用新闻入口。";
-  }
+  const key="today-news-cache-"+todayKey();
+  try{const cache=JSON.parse(localStorage.getItem(key)||"{}");allItems=cache.items?.length?cache.items:[]}catch{allItems=[]}
   try{fullArticles=JSON.parse(localStorage.getItem("full-articles")||"{}")}catch{fullArticles={}}
   render();
 }
-
 async function loadNews(){
-  $("#status").textContent=txt("loadingNews");
+  $("#status").textContent=t("loading");
   try{
     const results=await Promise.allSettled(feeds.map(loadFeed));
     const live=results.flatMap(r=>r.status==="fulfilled"?r.value:[]);
-    if(live.length){
-      allItems=live;
-      saveSuccessfulNews(live);
-      render();
-      $("#status").textContent=`已更新 ${live.length} 篇文章列表。`;
-      return;
-    }
-    const cache=getSavedNewsCache();
-    if(cache.items && cache.items.length){
-      allItems=cache.items;
-      render();
-      $("#status").textContent=`今日新闻暂未更新，已显示上次新闻，缓存日期：${cache.dateText || "未知"}。`;
-      return;
-    }
-    allItems=backupItems;
+    const today=live.filter(x=>isTodayDate(x.date));
+    allItems=today;
+    if(today.length)localStorage.setItem("today-news-cache-"+todayKey(),JSON.stringify({date:todayKey(),items:today}));
     render();
-    $("#status").textContent="今日新闻暂未更新，且没有历史缓存，已显示备用入口。";
-  }catch(e){
-    const cache=getSavedNewsCache();
-    if(cache.items && cache.items.length){
-      allItems=cache.items;
-      render();
-      $("#status").textContent=`新闻抓取失败，已显示上次新闻，缓存日期：${cache.dateText || "未知"}。`;
-      return;
-    }
-    allItems=backupItems;
-    render();
-    $("#status").textContent="新闻抓取失败，且没有历史缓存，已显示备用入口。";
-  }
+    $("#status").textContent=today.length?`已更新 ${today.length} 篇今日文章。`:"今日新闻暂未更新。";
+  }catch(e){render();$("#status").textContent="新闻抓取失败。";}
 }
 
 async function extractArticleText(item){
-  try{
-    const res=await fetch(backend("/extract?url="+encodeURIComponent(item.link)));
-    const data=await res.json();
-    return data.text || item.summary || "";
-  }catch(e){return item.summary||""}
+  try{const res=await fetch(backend("/extract?url="+encodeURIComponent(item.link)));const data=await res.json();return data.text||item.summary||""}catch(e){return item.summary||""}
 }
-
 async function fetchFullArticles(){
   const items=currentItems().slice(0,14);
   $("#status").textContent=`正在抓取 ${items.length} 篇材料。`;
   for(let i=0;i<items.length;i++){
     const item=items[i],id=uid(item);
-    if(fullArticles[id] && !fullArticles[id].includes("RSS 摘要补齐") && !fullArticles[id].includes("未能抓取")) continue;
+    if(fullArticles[id]&&!fullArticles[id].includes("RSS 摘要补齐")&&!fullArticles[id].includes("未能抓取"))continue;
     $("#status").textContent=`正在处理 ${i+1}/${items.length}：${item.title}`;
     const text=await extractArticleText(item);
     fullArticles[id]=text||`【RSS 摘要补齐】${item.summary||item.title}`;
-    localStorage.setItem("full-articles",JSON.stringify(fullArticles));
-    renderRawList();
+    localStorage.setItem("full-articles",JSON.stringify(fullArticles));renderRawList();
   }
   $("#status").textContent="材料处理完成。";
 }
-
 async function makeSmartBrief(){
   const items=currentItems().slice(0,14);
-  if(!items.length){$("#smartArticle").textContent=txt("noContent");return}
-  $("#status").textContent=txt("gen");
-  const articles=items.map(item=>({
-    cat:item.cat, source:item.source, title:item.title,
-    summary:item.summary||"", text:fullArticles[uid(item)]||item.summary||""
-  }));
+  if(!items.length){$("#smartArticle").textContent=t("noContent");return}
+  $("#status").textContent=t("gen");
+  const articles=items.map(item=>({cat:item.cat,source:item.source,title:item.title,summary:item.summary||"",text:fullArticles[uid(item)]||item.summary||""}));
   try{
-    const res=await fetch(backend("/brief"),{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({language:langNow(), articles})
-    });
+    const res=await fetch(backend("/brief"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({language:langNow(),articles})});
     const data=await res.json();
-    if(data.article){
-      $("#smartArticle").textContent=data.article.replace(/\*\*(.*?)\*\*/g,"[$1]").replace(/#+\s?/g,"");
-      $("#status").textContent=txt("done");
-    }else{
-      $("#smartArticle").textContent="OpenRouter 返回为空：\n\n"+JSON.stringify(data,null,2);
-      $("#status").textContent="OpenRouter 没有返回正文。";
-    }
-  }catch(e){
-    $("#smartArticle").textContent="调用失败：\n\n"+e.message;
-    $("#status").textContent="调用 Worker 失败。";
-  }
+    if(data.article){$("#smartArticle").textContent=data.article.replace(/\*\*(.*?)\*\*/g,"[$1]").replace(/#+\s?/g,"");$("#status").textContent=t("done")}
+    else{$("#smartArticle").textContent="OpenRouter 返回为空：\n\n"+JSON.stringify(data,null,2)}
+  }catch(e){$("#smartArticle").textContent="调用失败：\n\n"+e.message}
 }
-
-async function oneClick(){await fetchFullArticles();await makeSmartBrief();speakSmartBrief()}
-
-function speak(text){
-  if(!("speechSynthesis" in window)){ $("#status").textContent="当前浏览器不支持 TTS。"; return; }
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang=langNow();
-  u.rate=Number($("#rate").value);
-  const selectedVoice=voices[Number($("#voiceSelect").value)];
-  if(selectedVoice) u.voice=selectedVoice;
-  speechSynthesis.speak(u);
-}
-
-function speakSmartBrief(){
-  const text=$("#smartArticle").textContent.trim();
-  if(!text || text.includes("点击") || text.includes("撳") || text.includes("Click")){
-    makeSmartBrief().then(()=>speak($("#smartArticle").textContent));
-  }else speak(text);
-}
-
-function startOriginalPodcast(){
+async function playBrief(){const text=$("#smartArticle").textContent.trim();if(!text||text.includes("点击")||text.includes("撳")||text.includes("Click"))await makeSmartBrief();showPlayer(splitForPlayback($("#smartArticle").textContent), "brief");speakCurrent()}
+async function readOriginal(){
   const items=currentItems().filter(x=>fullArticles[uid(x)]).slice(0,10);
-  if(!items.length){$("#status").textContent=txt("noRawToRead");return}
-  podcastUntil=Date.now()+10*60*1000;let idx=0;
-  function next(){
-    if(Date.now()>podcastUntil||idx>=items.length){stopAll();return}
-    const item=items[idx++], text=(langNow()==="en-US"?`Reading from ${item.source}, titled ${item.title}. `:`現在朗讀，來源 ${item.source}，標題 ${item.title}。`)+(fullArticles[uid(item)]||"");
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text.slice(0,15000));
-    u.lang=langNow();
-    u.rate=Number($("#rate").value);
-    const selectedVoice=voices[Number($("#voiceSelect").value)];
-    if(selectedVoice) u.voice=selectedVoice;
-    u.onend=()=>{if(Date.now()<=podcastUntil)podcastTimer=setTimeout(next,800)};
-    speechSynthesis.speak(u);
-  }
-  next();
+  if(!items.length){$("#status").textContent=t("noRawToRead");return}
+  const text=items.map(item=>(langNow()==="en-US"?`Source: ${item.source}. Title: ${item.title}. `:`來源：${item.source}。標題：${item.title}。`)+(fullArticles[uid(item)]||"")).join("\n\n");
+  showPlayer(splitForPlayback(text), "original");speakCurrent();
 }
-
-function stopAll(){speechSynthesis.cancel();clearTimeout(podcastTimer);$("#status").textContent=txt("stopped")}
+function stopAll(){speechSynthesis.cancel();player.isPlaying=false;player.isPaused=false;renderSentenceView();$("#status").textContent=t("stopped")}
 function clearCache(){localStorage.removeItem("full-articles");fullArticles={};renderRawList();$("#status").textContent="已清空原文缓存，请重新抓取。"}
 
 window.addEventListener("DOMContentLoaded",()=>{
   $("#dateText").textContent=new Date().toLocaleDateString("zh-CN",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  $$(".tab").forEach(btn=>btn.onclick=()=>{$$(".tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentCat=btn.dataset.cat;render()});
-  $("#oneClickBtn").onclick=oneClick;$("#fetchFullBtn").onclick=fetchFullArticles;$("#summaryBtn").onclick=makeSmartBrief;$("#playBtn").onclick=speakSmartBrief;$("#podcastBtn").onclick=startOriginalPodcast;$("#stopBtn").onclick=stopAll;$("#refreshBtn").onclick=loadNews;$("#clearBtn").onclick=clearCache;
-  $("#copyBtn").onclick=async()=>{await navigator.clipboard.writeText($("#smartArticle").textContent);$("#status").textContent=txt("copied")};
+  $("#categorySelect").onchange=e=>{currentCat=e.target.value;render()};
   $("#language").onchange=()=>{applyLanguageUI();loadVoices();setTimeout(loadVoices,500);setTimeout(loadVoices,1500)};
+  $("#summaryBtn").onclick=makeSmartBrief;$("#fetchFullBtn").onclick=fetchFullArticles;$("#playBtn").onclick=playBrief;$("#podcastBtn").onclick=readOriginal;$("#stopBtn").onclick=stopAll;$("#refreshBtn").onclick=loadNews;$("#clearBtn").onclick=clearCache;
+  $("#copyBtn").onclick=async()=>{await navigator.clipboard.writeText($("#smartArticle").textContent);$("#status").textContent=t("copied")};
+  $("#progressRange").addEventListener("input",e=>{player.index=Number(e.target.value);renderSentenceView();if(player.isPlaying){speechSynthesis.cancel();speakCurrent()}});
+  $("#playerToggle").addEventListener("click",togglePlayer);
   applyLanguageUI();loadVoices();setTimeout(loadVoices,500);setTimeout(loadVoices,1500);loadCacheFirst();loadNews();
 });
 </script>
