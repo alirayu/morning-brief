@@ -91,7 +91,7 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 </section>
 
 <section class="brief-box">
-<div class="brief-title"><h2 id="summaryTitle">AI 整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
+<div class="brief-title"><h2 id="summaryTitle">十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
 <article id="smartArticle">点击“生成晨报”。</article>
 </section>
 
@@ -103,9 +103,9 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 const WORKER_BASE = "https://morning-brief.aliradevere.workers.dev";
 
 const UI={
-"zh-CN":{pageTitle:"今日简报",summaryTitle:"AI 整理十分钟晨报",categoryAll:"首页：今日简报",tech:"科技",energy:"能源",space:"太空",medical:"医疗",saved:"收藏新闻",generate:"生成晨报",fetch:"抓取原文",play:"播放晨报",readOriginal:"朗读原文",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",raw:"已抓取/清洗后的原文材料（朗读原文会读这里）",click:"点击“生成晨报”。",ready:"篇文章准备中",loading:"正在抓取新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",noContent:"今天这个分类暂无新闻。",noRaw:"还没有抓取到材料。",noRawToRead:"还没有原文材料；请先点“抓取原文”。",copied:"晨报已复制。",stopped:"已停止播放。"},
-"zh-HK":{pageTitle:"今日簡報",summaryTitle:"AI 整理十分鐘晨報",categoryAll:"首頁：今日簡報",tech:"科技",energy:"能源",space:"太空",medical:"醫療",saved:"收藏新聞",generate:"生成晨報",fetch:"擷取原文",play:"播放晨報",readOriginal:"朗讀原文",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",raw:"已擷取／清洗後嘅原文材料（朗讀原文會讀呢度）",click:"撳「生成晨報」。",ready:"篇文章準備中",loading:"正在擷取新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",noContent:"今日呢個分類暫時冇新聞。",noRaw:"暫時未擷取到材料。",noRawToRead:"仲未有原文材料；請先撳「擷取原文」。",copied:"晨報已複製。",stopped:"已停止播放。"},
-"en-US":{pageTitle:"Daily Brief",summaryTitle:"AI 10-Minute Brief",categoryAll:"Home: Daily Brief",tech:"Tech",energy:"Energy",space:"Space",medical:"Medical",saved:"Saved News",generate:"Generate Brief",fetch:"Fetch Articles",play:"Play Brief",readOriginal:"Read Original",clear:"Clear Cache",stop:"Stop",refresh:"Refresh Today",copy:"Copy Brief",raw:"Fetched / cleaned source materials",click:"Click “Generate Brief”.",ready:"articles ready",loading:"Loading today’s news.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",noContent:"No news in this category today.",noRaw:"No source materials yet.",noRawToRead:"No source materials yet. Fetch articles first.",copied:"Brief copied.",stopped:"Playback stopped."}
+"zh-CN":{pageTitle:"今日简报",summaryTitle:"十分钟晨报",categoryAll:"首页：今日简报",tech:"科技",energy:"能源",space:"太空",medical:"医疗",saved:"收藏新闻",generate:"生成晨报",fetch:"抓取原文",play:"播放晨报",readOriginal:"朗读原文",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",raw:"已抓取/清洗后的原文材料（朗读原文会读这里）",click:"点击“生成晨报”。",ready:"篇文章准备中",loading:"正在抓取新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",noContent:"今天这个分类暂无新闻。",noRaw:"还没有抓取到材料。",noRawToRead:"还没有原文材料；请先点“抓取原文”。",copied:"晨报已复制。",stopped:"已停止播放。"},
+"zh-HK":{pageTitle:"今日簡報",summaryTitle:"十分鐘晨報",categoryAll:"首頁：今日簡報",tech:"科技",energy:"能源",space:"太空",medical:"醫療",saved:"收藏新聞",generate:"生成晨報",fetch:"擷取原文",play:"播放晨報",readOriginal:"朗讀原文",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",raw:"已擷取／清洗後嘅原文材料（朗讀原文會讀呢度）",click:"撳「生成晨報」。",ready:"篇文章準備中",loading:"正在擷取新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",noContent:"今日呢個分類暫時冇新聞。",noRaw:"暫時未擷取到材料。",noRawToRead:"仲未有原文材料；請先撳「擷取原文」。",copied:"晨報已複製。",stopped:"已停止播放。"},
+"en-US":{pageTitle:"Daily Brief",summaryTitle:"10-Minute Brief",categoryAll:"Home: Daily Brief",tech:"Tech",energy:"Energy",space:"Space",medical:"Medical",saved:"Saved News",generate:"Generate Brief",fetch:"Fetch Articles",play:"Play Brief",readOriginal:"Read Original",clear:"Clear Cache",stop:"Stop",refresh:"Refresh Today",copy:"Copy Brief",raw:"Fetched / cleaned source materials",click:"Click “Generate Brief”.",ready:"articles ready",loading:"Loading today’s news.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",noContent:"No news in this category today.",noRaw:"No source materials yet.",noRawToRead:"No source materials yet. Fetch articles first.",copied:"Brief copied.",stopped:"Playback stopped."}
 };
 
 const feeds=[
