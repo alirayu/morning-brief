@@ -26,7 +26,7 @@ button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}butt
 .brief-title h2{margin:0;font-size:21px;letter-spacing:-.03em}
 #smartArticle{color:#222;line-height:1.9;margin:0;white-space:pre-wrap;font-size:16px}
 .player-box{display:none}.player-row,.raw-player-row{display:flex;align-items:center;gap:12px}
-#briefToggle,.raw-toggle{width:42px;height:42px;border-radius:50%;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;flex:0 0 auto}
+#briefToggle,.raw-toggle{width:auto;height:auto;border:0!important;background:transparent!important;color:#111!important;border-radius:0!important;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;padding:4px 6px;flex:0 0 auto;box-shadow:none!important}
 #briefProgress,.raw-progress{flex:1;accent-color:var(--orange);min-width:160px}
 #briefProgressText,.raw-progress-text{color:var(--muted);font-size:13px;min-width:76px;text-align:right}
 .sentence-view{margin-top:14px;max-height:220px;overflow:auto;line-height:1.8;color:#444;border-top:1px solid var(--line);padding-top:12px}
@@ -34,7 +34,7 @@ button.primary{background:#111;color:#fff;border-color:#111;font-weight:700}butt
 .sentence.active{background:rgba(255,138,0,.18);color:#c65f00;font-weight:800}
 .article-box details{border-top:1px solid var(--line);padding-top:14px}.article-box summary{cursor:pointer;font-weight:800}
 .raw-list{display:grid;gap:12px;margin-top:12px}.raw-item{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:16px;padding:14px}
-.raw-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.raw-play{width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800}
+.raw-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.raw-play{width:auto;height:auto;border:0!important;background:transparent!important;color:#111!important;border-radius:0!important;padding:2px 4px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;box-shadow:none!important}
 .raw-item h3{margin:0;font-size:16px}.raw-player{display:none;margin:10px 0 10px}.raw-player.show{display:block}
 .raw-text{color:#444;line-height:1.7;font-size:14px;max-height:220px;overflow:auto;white-space:normal}
 main{max-width:1180px;margin:auto;padding:0 16px 42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
@@ -109,7 +109,7 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 </section>
 
 <section class="brief-box">
-<div class="brief-title"><h2 id="summaryTitle">十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
+<div class="brief-title"><h2 id="summaryTitle">AI 整理十分钟晨报</h2><button id="copyBtn">复制晨报</button></div>
 <article id="smartArticle">点击“生成晨报”。</article>
 </section>
 
@@ -121,9 +121,9 @@ footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#777;font-size:13p
 const WORKER_BASE = "https://morning-brief.aliradevere.workers.dev";
 
 const UI={
-"zh-CN":{pageTitle:"今日简报",summaryTitle:"十分钟晨报",categoryAll:"首页：今日简报",allCountries:"全部国家/地区",saved:"收藏新闻",generate:"生成晨报",fetch:"抓取原文",play:"播放晨报",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",raw:"已抓取/清洗后的原文材料",click:"点击“生成晨报”。",ready:"篇今日文章",loading:"正在抓取今日新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",noContent:"今天这个筛选条件下暂无新闻。",noRaw:"还没有抓取到材料。",copied:"晨报已复制。",stopped:"已停止播放。"},
-"zh-HK":{pageTitle:"今日簡報",summaryTitle:"十分鐘晨報",categoryAll:"首頁：今日簡報",allCountries:"全部國家／地區",saved:"收藏新聞",generate:"生成晨報",fetch:"擷取原文",play:"播放晨報",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",raw:"已擷取／清洗後嘅原文材料",click:"撳「生成晨報」。",ready:"篇今日文章",loading:"正在擷取今日新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",noContent:"今日呢個篩選條件下暫時冇新聞。",noRaw:"暫時未擷取到材料。",copied:"晨報已複製。",stopped:"已停止播放。"},
-"en-US":{pageTitle:"Daily Brief",summaryTitle:"10-Minute Brief",categoryAll:"Home: Daily Brief",allCountries:"All countries/regions",saved:"Saved News",generate:"Generate Brief",fetch:"Fetch Articles",play:"Play Brief",clear:"Clear Cache",stop:"Stop",refresh:"Refresh Today",copy:"Copy Brief",raw:"Fetched / cleaned source materials",click:"Click “Generate Brief”.",ready:"articles today",loading:"Loading today’s news.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",noContent:"No news today for this filter.",noRaw:"No source materials yet.",copied:"Brief copied.",stopped:"Playback stopped."}
+"zh-CN":{pageTitle:"今日简报",summaryTitle:"AI 整理十分钟晨报",categoryAll:"首页：今日简报",allCountries:"全部国家/地区",saved:"收藏新闻",generate:"生成晨报",fetch:"抓取原文",play:"播放晨报",clear:"清空缓存",stop:"停止",refresh:"刷新今日新闻",copy:"复制晨报",raw:"已抓取/清洗后的原文材料",click:"点击“生成晨报”。",ready:"篇今日文章",loading:"正在抓取今日新闻列表。",gen:"正在调用 OpenRouter 生成简体中文晨报。",done:"简体中文晨报已生成。",noContent:"今天这个筛选条件下暂无新闻。",noRaw:"还没有抓取到材料。",copied:"晨报已复制。",stopped:"已停止播放。"},
+"zh-HK":{pageTitle:"今日簡報",summaryTitle:"AI 整理十分鐘晨報",categoryAll:"首頁：今日簡報",allCountries:"全部國家／地區",saved:"收藏新聞",generate:"生成晨報",fetch:"擷取原文",play:"播放晨報",clear:"清空快取",stop:"停止",refresh:"刷新今日新聞",copy:"複製晨報",raw:"已擷取／清洗後嘅原文材料",click:"撳「生成晨報」。",ready:"篇今日文章",loading:"正在擷取今日新聞列表。",gen:"正在調用 OpenRouter 生成繁體中文／粵語晨報。",done:"繁體中文／粵語晨報已生成。",noContent:"今日呢個篩選條件下暫時冇新聞。",noRaw:"暫時未擷取到材料。",copied:"晨報已複製。",stopped:"已停止播放。"},
+"en-US":{pageTitle:"Daily Brief",summaryTitle:"AI 10-Minute Brief",categoryAll:"Home: Daily Brief",allCountries:"All countries/regions",saved:"Saved News",generate:"Generate Brief",fetch:"Fetch Articles",play:"Play Brief",clear:"Clear Cache",stop:"Stop",refresh:"Refresh Today",copy:"Copy Brief",raw:"Fetched / cleaned source materials",click:"Click “Generate Brief”.",ready:"articles today",loading:"Loading today’s news.",gen:"Calling OpenRouter to generate English brief.",done:"English brief generated.",noContent:"No news today for this filter.",noRaw:"No source materials yet.",copied:"Brief copied.",stopped:"Playback stopped."}
 };
 
 const feeds=[
